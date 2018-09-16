@@ -1,5 +1,5 @@
-
-
+from termcolor import colored
+from Bio.Alphabet import IUPAC
 rna_codon_to_protein_dict = {
     "UUU":"F", "UUC":"F", "UUA":"L", "UUG":"L",
        "UCU":"S", "UCC":"S", "UCA":"S", "UCG":"S",
@@ -36,13 +36,47 @@ dna_codon_to_protein_dict = {
     'TAC': 'Y', 'TAT': 'Y', 'TAA': 'STOP', 'TAG': 'STOP',
     'TGC': 'C', 'TGT': 'C', 'TGA': 'STOP', 'TGG': 'W',
 }
+
+# AA_to_codon_dict = dict((y,x) for x,y in dna_codon_to_protein_dict.items())
+
 class AminoAcid:
 
-    def __init__(self, protein_name):
+    def __init__(self, one_letter_name, codon_to_aa_dict):
+        # self.long_name = protein_name
+        if len(one_letter_name) != 1:
+            print(colored("Error: multi-lettered protein name ", "red"))
+            exit(1)
+        if not one_letter_name.isupper() and not one_letter_name== "*":
+            print(colored("Error: non upper-case protein name ", "red"))
+            exit(1)
+        self.one_letter_name = one_letter_name
+        if not (one_letter_name == "STOP" or one_letter_name == "*"):
+            try:
+
+                self.three_letter_name =  IUPAC.IUPACData.protein_letters_1to3[one_letter_name]
+            except:
+                print(colored("Error: no such proetin name : "+ one_letter_name, color='red' ) )
+                exit(1)
+        self.coding_codons = []
+        self.find_relevant_codons_in_dict(codon_to_aa_dict)
+        self.organisms_dict = {}
+        self.not_to_use_codons = []
         pass
 
+    def add_organism_codons(self, codon_frequency_dict, organizm_name):
+        filtered_dict = {k: v for (k, v) in codon_frequency_dict.items() if  k in self.coding_codons}
+        self.organisms_dict[organizm_name] = filtered_dict
 
 
-    def add_organism_codons(self):
-        pass
+    def find_relevant_codons_in_dict(self, array):
 
+        array =[(k,v) for k,v in array.items()]
+        for key, val in array:
+            if val == self.one_letter_name :
+                self.coding_codons.append(key)
+
+
+# d = {'CGA': 3, 'CCG':112,'GGT' :33}
+# a = AminoAcid("R")
+# a.add_organism_codons(d,"creature")
+# print(a.organisms_dict)
