@@ -15,7 +15,7 @@ def parse_multiple_fasta_file(input_file_name):
     for fasta in fasta_sequences:
         name, sequence = fasta.id, fasta.seq.tostring()
         fastas.append([name, sequence])
-    return fastas[0] #TODO
+    return fastas[0] 
 
 def parse_fasta_file(input_file_name):
     return SeqIO.read(input_file_name, "fasta", generic_protein)
