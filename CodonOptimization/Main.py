@@ -4,9 +4,9 @@ from Bio.Alphabet import IUPAC
 from Bio.Seq import Seq
 from Bio.SeqUtils import ProtParam
 from Bio.Alphabet import generic_dna
-import Parser
-import AminoAcid
-import Calculator
+from CodonOptimization import Parser
+from CodonOptimization import AminoAcid
+from CodonOptimization import Calculator
 import sys
 from Bio import Restriction, SeqIO, SeqRecord
 # import python_codon_tables as pct
