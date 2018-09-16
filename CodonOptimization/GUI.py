@@ -9,17 +9,10 @@ global csv_file_name
 global restriction_file_name
 
 
-def run_optimization():
-    from CodonOptimization import Main
-    global protein_fasta_filename
-    codon_usage_tables_filnames_list = []
-    protein_fasta_filename = protein_fasta_filename
-    ouput_file_location = ""
-    Main.main(protein_fasta_filename=protein_fasta_filename,
-              list_codon_usage_filenames=codon_usage_tables_filnames_list, output_destination=ouput_file_location)
 
 protein_fasta_filename = ""
 filename3 = ""
+codon_usage_tables_filnames_list = []
 def run_Taico():
     from TaiCO_windows import TaiCO
     return
@@ -238,10 +231,8 @@ def create_Hebrew_U_window():
     root2.mainloop()
 
 
-
 #-------------------------------HebrewU 2 window------------------------------------------
 def create_second_hebrew_U_window():
-    print("created")
     root3 = Tk()
     v = tk.IntVar()
     root3.configure(background='#00B2B2')
@@ -249,6 +240,7 @@ def create_second_hebrew_U_window():
     root3.resizable(width=False, height=False)
     root3.title("MulTaiCO 2018 HebrewU (and DTU)")
 
+    global codon_usage_tables_filnames_list
 
     #rectangles wiht colours
     canvas = Canvas(root3, width = 700, height = 422)
@@ -268,30 +260,48 @@ def create_second_hebrew_U_window():
 
 
 
-    #next button
-    Screen3_Optimize = tk.Button(root3,text="Optimize",font=("Calibri", 15) , command =run_optimization )
-
-
     button_more.place(x=100,y=350)
     label_compatible.place(x=210,y=100)
     label_1.place(x=100,y=150)
     label_2.place(x=100,y=202)
-    Screen3_Optimize.place(x=500,y=350)
+
+    # next button
 
 
     #list1
-    variable = StringVar(root3)
-    variable.set("First pick") # default value
-    w = OptionMenu(root3, variable, "Arabidopsis thaliana", "Saccharomyces cerevisiae", "homosapiens", "Escherichia coli")
+    first_organizm_name = StringVar(root3)
+    first_organizm_name.set("First pick") # default value
+    w = OptionMenu(root3, first_organizm_name,   "Caenorhabditis elegans", "Bacillus subtilis", "homosapiens", "Escherichia coli" )
     w.place(x=130,y=150)
 
     #list2
-    variable = StringVar(root3)
-    variable.set("Second pick") # default value
-    w = OptionMenu(root3, variable, "Arabidopsis thaliana", "Saccharomyces cerevisiae", "homosapiens", "Escherichia coli")
+    second_organizm_name = StringVar(root3)
+    second_organizm_name.set("Second pick") # default value
+    w = OptionMenu(root3,  second_organizm_name,    "Caenorhabditis elegans", "Bacillus subtilis", "homosapiens", "Escherichia coli")
     w.place(x=130,y=200)
+    switch_dict = { "Caenorhabditis elegans": str("c_elegans_6239.csv"), "Bacillus subtilis": str("b_subtilis_1423.csv"), "homosapiens": str("h_sapiens_9606.csv" ),"Escherichia coli": str("e_coli_316407.csv")}
 
+    def run_optimization():
+        from CodonOptimization import Main
+        global protein_fasta_filename
+        global codon_usage_tables_filnames_list
+        name1 = first_organizm_name.get()
+        name2 = second_organizm_name.get()
+        global codon_usage_tables_filnames_list
+        if name1 != "First pick":
+            codon_usage_tables_filnames_list.append(switch_dict[name1])
+            print("added")
+        if name2 != "Second pick":
+            codon_usage_tables_filnames_list.append(switch_dict[name2])
+        # codon_usage_tables_filnames_list = []
+        protein_fasta_filename = protein_fasta_filename
+        ouput_file_location = "D:\LEA\Desktop\CodonOptimization"
+        Main.main(protein_fasta_filename=protein_fasta_filename,
+                  list_codon_usage_filenames=codon_usage_tables_filnames_list, output_destination=ouput_file_location)
 
+    Screen3_Optimize = Button(root3, text="Optimize", font=("Calibri", 15), command=run_optimization)
+
+    Screen3_Optimize.place(x=500, y=350)
 
     gui_MulT4.place(x=320,y=4)
     gui_descriptio_MulT4.place(x=210,y=40)

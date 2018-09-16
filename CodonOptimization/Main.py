@@ -28,7 +28,7 @@ def main(protein_fasta_filename, list_codon_usage_filenames,output_destination )
         exit(1)
     for i, file_name in enumerate(list_codon_usage_filenames):
         creature_name = ntpath.basename(file_name).split('.')[0] #TODO watch out
-        codon_usage_dict, codon_to_protein_dict, AA_list = Parser.parse_codon_usage_table(file_name)
+        codon_usage_dict, codon_to_protein_dict, AA_list = Parser.parse_codon_usage_table(str(file_name))
         creatures[creature_name] = codon_usage_dict, codon_to_protein_dict, AA_list
     #creates AA
     Amino_Acids_obj_list =[]
