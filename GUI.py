@@ -2,13 +2,14 @@ import threading
 from tkinter import *
 import tkinter as tk
 from tkinter import messagebox, filedialog
-from tkfilebrowser import askopenfilename
 import os
 import sys #.path import append as append_system_path
 import webbrowser
-global Fasta_File_name
-global csv_file_name
-global restriction_file_name
+
+Fasta_File_name = ""
+csv_file_name = ""
+restriction_file_name = ""
+ouput_file_location = ""
 
 # 3rd option not shown.
 is_3_shown = False
@@ -123,18 +124,9 @@ def create_Hebrew_U_window():
     gui_MulT = Label(root2, text="MulT",font=("Calibri", 23),bg="#00B2B2",fg="white")
     gui_descriptio_MulT = Label(root2, text="Multiple organism optimization by tRNA freq",font=("Calibri", 12),bg="#00B2B2",fg="white")
 
-
-    def get_fasta_file():
-        global Fasta_File_name
-        Fasta_File_name = askopenfilename(parent=root2, initialdir='Z:/')
-    def get_restriction():
-        global restriction_file_name
-        restriction_file_name = askopenfilename()
-    #Buttons and labels for protein and restriction inputs
-    button2 = Button(root2, text="Search file", fg="black",bg="white",  borderwidth=3, command =get_fasta_file )
-    button3 = Button(root2, text="Search file", fg="black",bg="white",  borderwidth=3, command = get_restriction)
     label_2 = Label(root2, text="Upload protein fasta file :", bg="#F0F0F0",font=("calibri",11))
     label_3 = Label(root2, text="Upload restriction sites file (optional) :", bg="#F0F0F0",font=("calibri",11))
+    label_4 = Label(root2, text="Enter destination Folder:", bg="#F0F0F0",font=("calibri",11))
 
     def get_back_to_main1():
         root2.destroy()
@@ -170,54 +162,67 @@ def create_Hebrew_U_window():
     file2 = Label(root2, bg="red")
     file3 = Label(root2, bg="red")
 
-    # search file
-    def ask_for_file():
-        return filedialog.askopenfilename(initialdir='Z:/')
-
     # choose infile 1
     def input_file1():
         # open the gcn file
         global filename1
-        filename1 = ask_for_file()
+        filename1 = filedialog.askopenfilename()
         # show only real name of file
-        name_file1 = filename1.split('/')
+        name_file1 = filename1.split('/')[-1]
         global file1
-        file1 = Label(root2, text=name_file1[-1], font=("Arial", 11), bg="white")
+        file1 = Label(root2, text=name_file1, font=("Arial", 11), bg="white")
         file1.place(x=494, y=109)
 
     # select file with sequences
     def input_file2():
         # open the file with the sequences
         global protein_fasta_filename
-        protein_fasta_filename = ask_for_file()
+        protein_fasta_filename = filedialog.askopenfilename()
         # show only real name of file
-        name_file2 = protein_fasta_filename.split('/')
+        name_file2 = protein_fasta_filename.split('/')[-1]
         global file2
-        file2 = Label(root2, text=name_file2[-1], font=("Arial", 11), bg="white")
+        file2 = Label(root2, text=name_file2, font=("Arial", 11), bg="white")
         file2.place(x=494, y=169)
 
     # check or not box to produce final result -> main analysis part
     def input_file3():
         # open the file with the sequences
         global filename3
-        filename3 = ask_for_file()
+        filename3 = filedialog.askopenfilename()
         # show only real name of file
-        name_file3 = filename3.split('/')
+        name_file3 = filename3.split('/')[-1]
         global file3
-        file3 = Label(root2, text=name_file3[-1], font=("Arial", 11), bg="white")
+        file3 = Label(root2, text=name_file3, font=("Arial", 11), bg="white")
         file3.place(x=494, y=229)
 
+    def output_file():
+        # open the file with the sequences
+        global ouput_file_location
+        ouput_file_location = filedialog.asksaveasfile()
+
+        output_file_name = ouput_file_location.split('/')[-1]
+        global out_file
+        out_file = Label(root2, text=output_file_name, font=("Arial", 11), bg="white")
+        out_file.place(x=494, y=279)
 
     button2 = Button(root2, text="Search file", fg="black", bg="white", command=input_file2, relief=RAISED,
                      borderwidth=3)
     button3 = Button(root2, text="Search file", fg="black", bg="white", command=input_file3, relief=RAISED,
                      borderwidth=3)
+    button4 = Button(root2, text="Select output", fg="black", bg="white", command=output_file, relief=RAISED,
+                     borderwidth=3)
+    entry_botton = Entry(root2)
+
+
     # place widgets in window by coordinates
     button2.place(x=380, y=163)
     button3.place(x=380, y=223)
+    # button4.place(x = 380, y = 280)
     label_2.place(x=120, y=167)
     label_3.place(x=120, y=227)
-
+    label_4.place(x=120, y=277)
+    entry_botton.place(x = 380, y = 290)
+    ouput_file_location = entry_botton.get()
     # emtpy (drawed) boxes for file names when selected
     myrectangle4 = canvas.create_rectangle(492, 166, 657, 193, fill='grey')
     canvas.itemconfig(myrectangle4, fill='white')
@@ -227,6 +232,7 @@ def create_Hebrew_U_window():
     button3.place(x=380,y=223)
     label_2.place(x=100,y=167)
     label_3.place(x=100,y=227)
+
     Screen1_next2.place(x=600,y=325)
     Screen1_next.place(x = 100, y = 325)
 
@@ -347,35 +353,27 @@ def create_second_hebrew_U_window():
         #     codon_usage_tables_filnames_list.append(switch_dict[name4])
         # codon_usage_tables_filnames_list = []
         protein_fasta_filename = protein_fasta_filename
-        ouput_file_location = "D:\LEA\Desktop"
-        print("aaaaa")
+        global ouput_file_location
 
-        sucsess = Main.main(protein_fasta_filename=protein_fasta_filename,
-                            list_codon_usage_filenames=codon_usage_tables_filnames_list,
-                            output_destination=ouput_file_location)
-        if sucsess:
-            boolvar.set(1)
-        else:
-            boolvar.set(2)
-        print("inside function boolvar is "+ str(boolvar.get()))
+        return Main.main(protein_fasta_filename=protein_fasta_filename,
+                         list_codon_usage_filenames=codon_usage_tables_filnames_list,
+                         output_destination=ouput_file_location)
+
     def handle_click():
         print("boolvar is " + str(boolvar.get()))
 
-        run_optimization()
+        success = run_optimization()
         #root3.after(0, run_optimization)
-        if sucsess == 1:
+        if success == 1:
             print("yay")
             messagebox.showinfo('MulT 2018', "Optimization successful. Output printed to specified location")
             root3.destroy()
             create_main_window()
-        elif sucsess == 2:
+        elif success == 2:
             messagebox.showinfo('MulT 2018', "Optimization failed.")
         #print("boolvar is " + str(boolvar.get()))
 
     Screen3_Optimize = Button(root3, text="Optimize", font=("Calibri", 15), command=handle_click)
-    sucsess = boolvar.get()
-    print(type(sucsess))
-
 
 
     Screen3_Optimize.place(x=500, y=350)
@@ -390,11 +388,3 @@ def create_second_hebrew_U_window():
 if __name__ == '__main__':
 
     create_main_window()
-
-
-
-
-
-
-
-
