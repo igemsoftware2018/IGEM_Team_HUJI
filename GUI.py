@@ -313,10 +313,10 @@ def create_second_hebrew_U_window():
     v4 = OptionMenu(root3, fourth_organizm_name, "none", "Arabidopsis thaliana", "Saccharomyces cerevisiae", "homosapiens",
                     "Escherichia coli")
 
-    switch_dict = {"Caenorhabditis elegans" : "organism_files\c_elegans_6239.csv",
-                   "Bacillus subtilis" : r"organism_files\b_subtilis_1423.csv",
-                   "homosapiens" : "organism_files\h_sapiens_9606.csv",
-                   "Escherichia coli" : "organism_files\e_coli_316407.csv",
+    switch_dict = {"Caenorhabditis elegans" : "CodonOptimization\organism_files\c_elegans_6239.csv",
+                   "Bacillus subtilis" : r"CodonOptimization\organism_files\b_subtilis_1423.csv",
+                   "homosapiens" : "CodonOptimization\organism_files\h_sapiens_9606.csv",
+                   "Escherichia coli" : "CodonOptimization\organism_files\e_coli_316407.csv",
                    "Arabidopsis thaliana" : ""}
 
 
