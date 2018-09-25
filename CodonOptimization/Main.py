@@ -60,6 +60,8 @@ def main(protein_fasta_filename, list_codon_usage_filenames,output_destination )
     print("printing to output file....")
     with open(output_file_name, "w") as output_handle:
         SeqIO.write(record, output_handle, "fasta")
+    print("ouput sucsessful")
+    return True
 
 
 

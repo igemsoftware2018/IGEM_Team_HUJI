@@ -38,7 +38,7 @@ def parse_string_protein():
     pass
 
 def parse_codon_usage_table(file_name):
-
+    # file_name = file_name.decode()
     pdf =pandas.read_csv(file_name, header =0  )
     codon_to_protein_dict = {}
     codon_usage_dict = {}

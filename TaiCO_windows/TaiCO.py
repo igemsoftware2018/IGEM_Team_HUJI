@@ -30,48 +30,19 @@ import tkinter.messagebox
 import os
 import numpy as np
 
-#create window
-root = Tk()
-root.configure(background='grey')
-root.geometry("700x422")
-root.resizable(width=False, height=False)
-root.title("TaiCO 2016 DTU")
-#shortcut image
-img = tkinter.Image("photo", file="logo.gif")
-root.tk.call('wm','iconphoto',root._w,img)
-
-#folder name to result file
-dir_path = os.path.dirname(os.path.realpath(__file__))
-only_folder = str(dir_path).split('/')
-
-#status bar
-status = Label(root,text="For help, please contact : vrantos@hotmail.gr",bd=2,relief=SUNKEN,anchor=W)
-status.pack(side=BOTTOM,fill=X)
-
-#rectangles wiht colours
-canvas = Canvas(root, width = 700, height = 422)
-canvas.pack()
-myrectangle1 = canvas.create_rectangle(0, 0, 700, 65, fill='black')
-canvas.itemconfig(myrectangle1, fill='#464444')
-myrectangle2 = canvas.create_rectangle(0, 0, 80, 422, fill='black')
-canvas.itemconfig(myrectangle2, fill='#141313')
-
-#gui name
-gui_name = Label(root, text="TaiCO",font=("Arial", 20,"bold"),bg="#464444",fg="white")
-gui_description = Label(root, text="- a tAI-based codon optimization tool",font=("Arial", 10,"bold"),bg="#464444",fg="white")
-gui_description.place(x=259,y=40)
-gui_name.place(x=339,y=8)
-
-#just to make my life easier with this files path (else no solvable)
+global root
+global only_folder
 infile1 = None
 infile2 = None
 infile3 = None
 filename1 = ''
 protein_fasta_filename = ''
 filename3 = ''
-file1 = Label(root,bg="red")
-file2 = Label(root,bg="red")
-file3 = Label(root,bg="red")
+file1 = ""
+file2 = ""
+file3 = ""
+
+
 
 #pop up message when hitting biobuilders magic button
 def magicbutton():
@@ -100,6 +71,7 @@ def input_file1():
     global name_file1
     name_file1 = filename1.split('/')
     global file1
+    global root
     file1 = Label(root, text=name_file1[-1],font=("Arial", 11),bg="white")
     file1.place(x=494,y=109)
 
@@ -128,7 +100,14 @@ def input_file3():
     global file3
     file3 = Label(root, text=name_file3[-1],font=("Arial", 11),bg="white")
     file3.place(x=494,y=229)
-        
+
+
+def restart():
+    if tkinter.messagebox.askokcancel("Back to Menu", "Sure you want to go back to Menu?"):
+        root.destroy()
+        import GUI
+        GUI.create_main_window()
+
 def main_script():
     #initialize dicts,lists,strings
     #opt_codon = first option
@@ -535,51 +514,98 @@ def main_script():
     global file3
     if file3 != '':
         file3.place_forget()
-        
+    global only_folder
     #message box after the procedure was finished
-    tkinter.messagebox.showinfo('TaiCO 2016', 'File: '+name_file1[-1][:-4]+'.fsa\nsaved in folder: '+only_folder[-1])
-    
-label_1 = Label(root, text="Upload species GCN table :", bg="white",font=("Arial",11),relief=RIDGE,borderwidth=3)
-label_2 = Label(root, text="Upload protein fasta file :", bg="white",font=("Arial",11),relief=RIDGE,borderwidth=3)
-label_3 = Label(root, text="Upload restriction sites file (optional) :", bg="white",font=("Arial",11),relief=RIDGE,borderwidth=3)
+    tkinter.messagebox.showinfo('TaiCO 2016', 'File: '+name_file1[-1][:-4]+'.fsa\nsaved in folder: '+ only_folder[-1])
 
-button1 = Button(root, text="Search file", fg="black",bg="white", command=input_file1, relief=RAISED, borderwidth=3)
-button2 = Button(root, text="Search file", fg="black",bg="white", command=input_file2,relief=RAISED, borderwidth=3)
-button3 = Button(root, text="Search file", fg="black",bg="white", command=input_file3,relief=RAISED, borderwidth=3)
-start_button = Button(root, text="Start analysis", fg="black",bg="white", command=main_script,font=(15),relief=RAISED, borderwidth=3)
+def run_taico():
+    #create window
+    global root
+    root = Tk()
+    root.configure(background='grey')
+    root.geometry("700x422")
+    root.resizable(width=False, height=False)
+    root.title("TaiCO 2016 DTU")
+    #shortcut image
+    img = tkinter.Image("photo", file="logo.gif")
+    root.tk.call('wm','iconphoto',root._w,img)
 
-# place widgets in window by coordinates
-button1.place(x=380,y=103)
-button2.place(x=380,y=163)
-button3.place(x=380,y=223)
-start_button.place(x=517,y=325)
-label_1.place(x=120,y=107)
-label_2.place(x=120,y=167)
-label_3.place(x=120,y=227)
+    #folder name to result file
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    global only_folder
+    only_folder = str(dir_path).split('/')
 
-#emtpy (drawed) boxes for file names when selected
-myrectangle3 = canvas.create_rectangle(492, 106, 657, 133, fill='grey')
-canvas.itemconfig(myrectangle3, fill='white')
-myrectangle4 = canvas.create_rectangle(492, 166, 657, 193, fill='grey')
-canvas.itemconfig(myrectangle4, fill='white')
-myrectangle5 = canvas.create_rectangle(492, 226, 657, 253, fill='grey')
-canvas.itemconfig(myrectangle5, fill='white')
+    #status bar
+    status = Label(root,text="For help, please contact : vrantos@hotmail.gr",bd=2,relief=SUNKEN,anchor=W)
+    status.pack(side=BOTTOM,fill=X)
 
-#dna image
-dna_image = PhotoImage(file="dna.gif")
-dna_label1 = tkinter.Label(root,image=dna_image)
-dna_label1.place(x=120,y=327)
+    #rectangles wiht colours
+    canvas = Canvas(root, width = 700, height = 422)
+    canvas.pack()
+    myrectangle1 = canvas.create_rectangle(0, 0, 700, 65, fill='black')
+    canvas.itemconfig(myrectangle1, fill='#464444')
+    myrectangle2 = canvas.create_rectangle(0, 0, 80, 422, fill='black')
+    canvas.itemconfig(myrectangle2, fill='#141313')
 
-#DTU Biobuilders image button
-photo = PhotoImage(file="logo.gif")
+    #gui name
+    gui_name = Label(root, text="TaiCO",font=("Arial", 20,"bold"),bg="#464444",fg="white")
+    gui_description = Label(root, text="- a tAI-based codon optimization tool",font=("Arial", 10,"bold"),bg="#464444",fg="white")
+    gui_description.place(x=259,y=40)
+    gui_name.place(x=339,y=8)
 
-Buttonimage=Button(root, image=photo,bg="white",command=magicbutton,relief=RAISED)
-Buttonimage.place(x=0,y=0)
+    #just to make my life easier with this files path (else no solvable)
 
-#ask before exit
-def Quit():
-    if tkinter.messagebox.askokcancel("Quit", "Sure you want to QUIT?"):
-        root.destroy()
-root.protocol("WM_DELETE_WINDOW", Quit)
-#continue running window
-root.mainloop()
+    file1 = Label(root,bg="red")
+    file2 = Label(root,bg="red")
+    file3 = Label(root,bg="red")
+
+
+    label_1 = Label(root, text="Upload species GCN table :", bg="white",font=("Arial",11),relief=RIDGE,borderwidth=3)
+    label_2 = Label(root, text="Upload protein fasta file :", bg="white",font=("Arial",11),relief=RIDGE,borderwidth=3)
+    label_3 = Label(root, text="Upload restriction sites file (optional) :", bg="white",font=("Arial",11),relief=RIDGE,borderwidth=3)
+
+    button1 = Button(root, text="Search file", fg="black",bg="white", command=input_file1, relief=RAISED, borderwidth=3)
+    button2 = Button(root, text="Search file", fg="black",bg="white", command=input_file2,relief=RAISED, borderwidth=3)
+    button3 = Button(root, text="Search file", fg="black",bg="white", command=input_file3,relief=RAISED, borderwidth=3)
+    start_button = Button(root, text="Start analysis", fg="black",bg="white", command=main_script,font=(15),relief=RAISED, borderwidth=3)
+    back_button = Button(root, text="Back", fg="black",bg="white", command=restart,font=(15),relief=RAISED, borderwidth=3)
+
+    # place widgets in window by coordinates
+    button1.place(x=380,y=103)
+    button2.place(x=380,y=163)
+    button3.place(x=380,y=223)
+    start_button.place(x=557,y=325)
+    back_button.place(x=100,y=325)
+    label_1.place(x=120,y=107)
+    label_2.place(x=120,y=167)
+    label_3.place(x=120,y=227)
+
+    #emtpy (drawed) boxes for file names when selected
+    myrectangle3 = canvas.create_rectangle(492, 106, 657, 133, fill='grey')
+    canvas.itemconfig(myrectangle3, fill='white')
+    myrectangle4 = canvas.create_rectangle(492, 166, 657, 193, fill='grey')
+    canvas.itemconfig(myrectangle4, fill='white')
+    myrectangle5 = canvas.create_rectangle(492, 226, 657, 253, fill='grey')
+    canvas.itemconfig(myrectangle5, fill='white')
+
+    #dna image
+    dna_image = PhotoImage(file="dna.gif")
+    dna_label1 = tkinter.Label(root,image=dna_image)
+    dna_label1.place(x=160,y=327)
+
+    #DTU Biobuilders image button
+    photo = PhotoImage(file="logo.gif")
+
+    Buttonimage=Button(root, image=photo,bg="white",command=magicbutton,relief=RAISED)
+    Buttonimage.place(x=0,y=0)
+
+    #ask before exit
+    def Quit():
+        if tkinter.messagebox.askokcancel("Quit", "Sure you want to QUIT?"):
+            root.destroy()
+    root.protocol("WM_DELETE_WINDOW", Quit)
+    #continue running window
+    root.mainloop()
+
+if __name__ == '__main__':
+    run_taico()
