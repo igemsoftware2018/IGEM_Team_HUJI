@@ -80,13 +80,13 @@ def create_main_window():
     Screen1_next = tk.Button(root,text="Next",font=("Calibri", 15) , command = run_option )
 
     #DTU logo
-    photo_DTU = PhotoImage(file="DTU.gif")
+    photo_DTU = PhotoImage(file="CodonOptimization\DTU.gif")
     Buttonimage=Button(root, image=photo_DTU,bg="white",relief=RAISED,command = open_DTU_website)
     Buttonimage.place(x=620,y=350)
 
 
     #HebrewU logo
-    photo_HebrewU = PhotoImage(file="HebrewU.gif")
+    photo_HebrewU = PhotoImage(file="CodonOptimization\HebrewU.gif")
     Buttonimage=Button(root, image=photo_HebrewU,bg="white",relief=RAISED, command = open_hebrew_u_website)
     Buttonimage.place(x=0,y=370)
 
