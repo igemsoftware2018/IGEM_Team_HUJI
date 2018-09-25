@@ -84,5 +84,5 @@ def check_restriction(seq, batch_list, to_print = True):
 if __name__ == '__main__':
     if len(sys.argv)<2:
         print(colored("Usage: <FASTA FILE> <CREATURE 1 TABLE> <CREATURE 2 TABLE> ....", "green"))
-a = ["D:\LEA\BIOINFORMATICS\Year_3\Igem\data\c_elegans_6239.csv", "D:\LEA\BIOINFORMATICS\Year_3\Igem\data\h_sapiens_9606.csv", r"D:\LEA\BIOINFORMATICS\Year_3\Igem\data\b_subtilis_1423.csv"]
-main(r"D:\LEA\BIOINFORMATICS\Year_3\Igem\data\HMR1.fasta",a,"D:\LEA\BIOINFORMATICS\Year_3\Igem\ouput")
+    # a = ["D:\LEA\BIOINFORMATICS\Year_3\Igem\data\c_elegans_6239.csv", "D:\LEA\BIOINFORMATICS\Year_3\Igem\data\h_sapiens_9606.csv", r"D:\LEA\BIOINFORMATICS\Year_3\Igem\data\b_subtilis_1423.csv"]
+    # main(r"D:\LEA\BIOINFORMATICS\Year_3\Igem\data\HMR1.fasta",a,"D:\LEA\BIOINFORMATICS\Year_3\Igem\ouput")
