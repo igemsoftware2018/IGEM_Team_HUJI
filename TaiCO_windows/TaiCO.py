@@ -37,7 +37,7 @@ infile2 = None
 infile3 = None
 filename1 = ''
 protein_fasta_filename = ''
-filename3 = ''
+fasta_file_name = ''
 file1 = ""
 file2 = ""
 file3 = ""
@@ -91,7 +91,7 @@ def input_file2():
 #check or not box to produce final result -> main analysis part
 def input_file3():
     #open the file with the sequences
-    global filename3
+    global fasta_file_name
     global infile3
     filename3=ask_for_file()
     infile3 = open(filename3, 'r')

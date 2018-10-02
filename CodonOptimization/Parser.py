@@ -1,5 +1,4 @@
 from Bio import SeqIO
-import csv
 import pandas
 from Bio.Alphabet import generic_protein
 

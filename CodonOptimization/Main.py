@@ -12,7 +12,6 @@ from Bio import Restriction, SeqIO, SeqRecord
 # import python_codon_tables as pct
 import ntpath
 
-from termcolor import colored
 
 
 def main(protein_fasta_filename, list_codon_usage_filenames,output_destination ):
@@ -24,7 +23,7 @@ def main(protein_fasta_filename, list_codon_usage_filenames,output_destination )
     creatures = {}
     #parse table
     if len(list_codon_usage_filenames) ==0:
-        print(colored("Error: Empty codon table filnames", "red"))
+        print("Error: Empty codon table filnames")
         exit(1)
     for i, file_name in enumerate(list_codon_usage_filenames):
         creature_name = ntpath.basename(file_name).split('.')[0] #TODO watch out
@@ -83,6 +82,6 @@ def check_restriction(seq, batch_list, to_print = True):
 
 if __name__ == '__main__':
     if len(sys.argv)<2:
-        print(colored("Usage: <FASTA FILE> <CREATURE 1 TABLE> <CREATURE 2 TABLE> ....", "green"))
+        print("Usage: <FASTA FILE> <CREATURE 1 TABLE> <CREATURE 2 TABLE> ....")
     # a = ["D:\LEA\BIOINFORMATICS\Year_3\Igem\data\c_elegans_6239.csv", "D:\LEA\BIOINFORMATICS\Year_3\Igem\data\h_sapiens_9606.csv", r"D:\LEA\BIOINFORMATICS\Year_3\Igem\data\b_subtilis_1423.csv"]
     # main(r"D:\LEA\BIOINFORMATICS\Year_3\Igem\data\HMR1.fasta",a,"D:\LEA\BIOINFORMATICS\Year_3\Igem\ouput")

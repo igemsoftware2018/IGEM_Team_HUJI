@@ -14,9 +14,8 @@ ouput_file_location = ""
 # 3rd option not shown.
 is_3_shown = False
 protein_fasta_filename = ""
-filename3 = ""
+fasta_file_name = ""
 codon_usage_tables_filnames_list = []
-
 
 def run_Taico():
     from TaiCO_windows import TaiCO
@@ -133,8 +132,14 @@ def create_Hebrew_U_window():
         create_main_window()
 
     def second_menu():
+        global restriction_file_name
+        global ouput_file_location
         global protein_fasta_filename
-        global filename3
+        global fasta_file_name
+
+        restriction_file_name = restriction_entry.get()
+        protein_fasta_filename = fasta_entry.get()
+        ouput_file_location = output_entry.get()
         if protein_fasta_filename == "" or protein_fasta_filename.split(".")[-1]!= "fasta":
             messagebox.showinfo('MulT 2018',
                                 'Please select a FASTA file')
@@ -144,7 +149,7 @@ def create_Hebrew_U_window():
             messagebox.showinfo('MulT 2018',
                                      'Invalid or unexisting FASTA file, please select another')
             return
-        if not os.path.exists(filename3) and filename3 != "" :
+        if not os.path.exists(protein_fasta_filename) and protein_fasta_filename != "" :
              messagebox.showinfo('MulT 2018',"Non- existing restriction file. ")
              return
         root2.destroy()
@@ -154,87 +159,89 @@ def create_Hebrew_U_window():
     #next button
     Screen1_next2 = tk.Button(root2,text="Next",font=("Calibri", 15 ), command =second_menu )
     #back_button
-    Screen1_next = tk.Button(root2,text="Back",font=("Calibri", 15) , command = get_back_to_main1 )
+    screen1_back = tk.Button(root2,text="Back",font=("Calibri", 15) , command = get_back_to_main1 )
 
 
-    protein_fasta_filename = ''
-    filename3 = ''
     file2 = Label(root2, bg="red")
     file3 = Label(root2, bg="red")
 
-    # choose infile 1
-    def input_file1():
-        # open the gcn file
-        global filename1
-        filename1 = filedialog.askopenfilename()
-        # show only real name of file
-        name_file1 = filename1.split('/')[-1]
-        global file1
-        file1 = Label(root2, text=name_file1, font=("Arial", 11), bg="white")
-        file1.place(x=494, y=109)
+    output_entry = Entry(root2)
+    fasta_entry = Entry(root2)
+    restriction_entry = Entry(root2)
+    global ouput_file_location
+    global protein_fasta_filename
+    global restriction_file_name
+
+    fasta_entry.insert(0, protein_fasta_filename)
+    restriction_entry.insert(0, restriction_file_name)
+    output_entry.insert(0, ouput_file_location)
 
     # select file with sequences
     def input_file2():
         # open the file with the sequences
         global protein_fasta_filename
+        if protein_fasta_filename != "":
+            fasta_entry.delete(0, END)
         protein_fasta_filename = filedialog.askopenfilename()
         # show only real name of file
-        name_file2 = protein_fasta_filename.split('/')[-1]
-        global file2
-        file2 = Label(root2, text=name_file2, font=("Arial", 11), bg="white")
-        file2.place(x=494, y=169)
+        # protein_fasta_filename = protein_fasta_filename.split('/')[-1]
+        fasta_entry.insert(0, protein_fasta_filename)
 
     # check or not box to produce final result -> main analysis part
     def input_file3():
         # open the file with the sequences
-        global filename3
-        filename3 = filedialog.askopenfilename()
+        global restriction_file_name
+        if restriction_file_name != "":
+            restriction_entry.delete(0, END)
+        restriction_file_name = filedialog.askopenfilename()
         # show only real name of file
-        name_file3 = filename3.split('/')[-1]
-        global file3
-        file3 = Label(root2, text=name_file3, font=("Arial", 11), bg="white")
-        file3.place(x=494, y=229)
+        # restriction_file_name = restriction_file_name.split('/')[-1]
+        restriction_entry.insert(0, restriction_file_name)
 
     def output_file():
         # open the file with the sequences
         global ouput_file_location
-        ouput_file_location = filedialog.asksaveasfile()
+        if ouput_file_location != "":
+            output_entry.delete(0, END)
+        ouput_file_location = filedialog.askdirectory()
 
-        output_file_name = ouput_file_location.split('/')[-1]
-        global out_file
-        out_file = Label(root2, text=output_file_name, font=("Arial", 11), bg="white")
-        out_file.place(x=494, y=279)
+        # ouput_file_location = ouput_file_location.split('/')[-1]
+        output_entry.insert(0, ouput_file_location)
 
-    button2 = Button(root2, text="Search file", fg="black", bg="white", command=input_file2, relief=RAISED,
+    fasta_search_button = Button(root2, text="Search file", fg="black", bg="white", command=input_file2, relief=RAISED,
                      borderwidth=3)
     button3 = Button(root2, text="Search file", fg="black", bg="white", command=input_file3, relief=RAISED,
                      borderwidth=3)
     button4 = Button(root2, text="Select output", fg="black", bg="white", command=output_file, relief=RAISED,
                      borderwidth=3)
-    entry_botton = Entry(root2)
+
+
 
 
     # place widgets in window by coordinates
-    button2.place(x=380, y=163)
+    fasta_search_button.place(x=380, y=163)
     button3.place(x=380, y=223)
-    # button4.place(x = 380, y = 280)
+    button4.place(x = 380, y = 280)
     label_2.place(x=120, y=167)
     label_3.place(x=120, y=227)
-    label_4.place(x=120, y=277)
-    entry_botton.place(x = 380, y = 290)
-    ouput_file_location = entry_botton.get()
+    label_4.place(x=100, y=277)
+    fasta_entry.place(x = 480, y = 167)
+    restriction_entry.place(x = 480, y = 225)
+    output_entry.place(x = 480, y = 280)
+
+    ouput_file_location = output_entry.get()
     # emtpy (drawed) boxes for file names when selected
-    myrectangle4 = canvas.create_rectangle(492, 166, 657, 193, fill='grey')
-    canvas.itemconfig(myrectangle4, fill='white')
-    myrectangle5 = canvas.create_rectangle(492, 226, 657, 253, fill='grey')
-    canvas.itemconfig(myrectangle5, fill='white')
-    button2.place(x=380,y=163)
+    # myrectangle4 = canvas.create_rectangle(492, 166, 657, 193, fill='grey')
+    # canvas.itemconfig(myrectangle4, fill='white')
+    # myrectangle5 = canvas.create_rectangle(492, 226, 657, 253, fill='grey')
+    # canvas.itemconfig(myrectangle5, fill='white')
+    # fasta_search_button.place(x=380,y=163)
     button3.place(x=380,y=223)
     label_2.place(x=100,y=167)
     label_3.place(x=100,y=227)
 
     Screen1_next2.place(x=600,y=325)
-    Screen1_next.place(x = 100, y = 325)
+    screen1_back.place(x = 100, y = 325)
 
 
     gui_MulT.place(x=320,y=4)
@@ -252,7 +259,9 @@ def create_second_hebrew_U_window():
     root3.title("MulTaiCO 2018 HebrewU (and DTU)")
 
     global codon_usage_tables_filnames_list
-
+    def get_back_to_second_window():
+        root3.destroy()
+        create_Hebrew_U_window()
 
 
     #rectangles wiht colours
@@ -281,14 +290,15 @@ def create_second_hebrew_U_window():
 
     #Buttons and labels for more and optimizze buttons
     button_more = Button(root3, text="Add more organisms", bg="#F0F0F0", font=("calibri", 15), command=addmore)
+    button_back = Button(root3, text="Back", bg="#F0F0F0", font=("calibri", 15), command=get_back_to_second_window)
     label_compatible = Label(root3, text="Compatible organisms (by priority):", bg="#F0F0F0", font=("calibri", 15))
     label_1 = Label(root3, text="1.", bg="#F0F0F0", font=("calibri", 15))
     label_2 = Label(root3, text="2.", bg="#F0F0F0", font=("calibri", 15))
     label_3 = Label(root3, text="3.", bg="#F0F0F0", font=("calibri", 15))
     label_4 = Label(root3, text="4.", bg="#F0F0F0", font=("calibri", 15))
-
-    button_more.place(x=100, y=350)
-    label_compatible.place(x=210, y=100)
+    button_back.place(x = 100, y = 350)
+    button_more.place(x=230, y=350)
+    label_compatible.place(x=100, y=100)
     label_1.place(x=100, y=140)
     label_2.place(x=100, y=192)
 
