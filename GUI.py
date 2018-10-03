@@ -123,9 +123,9 @@ def create_Hebrew_U_window():
     gui_MulT = Label(root2, text="MulT",font=("Calibri", 23),bg="#00B2B2",fg="white")
     gui_descriptio_MulT = Label(root2, text="Multiple organism optimization by tRNA freq",font=("Calibri", 12),bg="#00B2B2",fg="white")
 
-    label_2 = Label(root2, text="Upload protein fasta file :", bg="#F0F0F0",font=("calibri",11))
-    label_3 = Label(root2, text="Upload restriction sites file (optional) :", bg="#F0F0F0",font=("calibri",11))
-    label_4 = Label(root2, text="Enter destination Folder:", bg="#F0F0F0",font=("calibri",11))
+    fasta_label = Label(root2, text="Upload protein fasta file :", bg="#F0F0F0",font=("calibri",11))
+    restriction_label = Label(root2, text="Upload restriction sites file (optional) :", bg="#F0F0F0",font=("calibri",11))
+    destination_label = Label(root2, text="Enter destination Folder:", bg="#F0F0F0",font=("calibri",11))
 
     def get_back_to_main1():
         root2.destroy()
@@ -196,7 +196,9 @@ def create_Hebrew_U_window():
         restriction_file_name = filedialog.askopenfilename()
         # show only real name of file
         # restriction_file_name = restriction_file_name.split('/')[-1]
-        restriction_entry.insert(0, restriction_file_name)
+        with open(restriction_file_name, 'r') as content_file:
+             content = content_file.read()
+        restriction_entry.insert(0, content)
 
     def output_file():
         # open the file with the sequences
@@ -210,38 +212,31 @@ def create_Hebrew_U_window():
 
     fasta_search_button = Button(root2, text="Search file", fg="black", bg="white", command=input_file2, relief=RAISED,
                      borderwidth=3)
-    button3 = Button(root2, text="Search file", fg="black", bg="white", command=input_file3, relief=RAISED,
+    search_restriction_button = Button(root2, text="Search file", fg="black", bg="white", command=input_file3, relief=RAISED,
                      borderwidth=3)
-    button4 = Button(root2, text="Select output", fg="black", bg="white", command=output_file, relief=RAISED,
+    output_search_button = Button(root2, text="Select folder", fg="black", bg="white", command=output_file, relief=RAISED,
                      borderwidth=3)
 
 
 
 
-    # place widgets in window by coordinates
+    # place buttons in window by coordinates
     fasta_search_button.place(x=380, y=163)
-    button3.place(x=380, y=223)
-    button4.place(x = 380, y = 280)
-    label_2.place(x=120, y=167)
-    label_3.place(x=120, y=227)
-    label_4.place(x=100, y=277)
-    fasta_entry.place(x = 480, y = 167)
-    restriction_entry.place(x = 480, y = 225)
-    output_entry.place(x = 480, y = 280)
-
-    ouput_file_location = output_entry.get()
-    # emtpy (drawed) boxes for file names when selected
-    # myrectangle4 = canvas.create_rectangle(492, 166, 657, 193, fill='grey')
-    # canvas.itemconfig(myrectangle4, fill='white')
-    # myrectangle5 = canvas.create_rectangle(492, 226, 657, 253, fill='grey')
-    # canvas.itemconfig(myrectangle5, fill='white')
-    # fasta_search_button.place(x=380,y=163)
-    button3.place(x=380,y=223)
-    label_2.place(x=100,y=167)
-    label_3.place(x=100,y=227)
-
+    output_search_button.place(x=380, y=223)
+    search_restriction_button.place(x = 380, y = 280)
     Screen1_next2.place(x=600,y=325)
     screen1_back.place(x = 100, y = 325)
+
+    #place entrys
+    fasta_entry.place(x = 480, y = 167)
+    output_entry.place(x = 480, y = 225)
+    restriction_entry.place(x = 480, y = 280)
+    #place labels
+    fasta_label.place(x=100,y=167)
+    destination_label.place(x=100,y=227)
+    restriction_label.place(x=100, y=277)
+
+    ouput_file_location = output_entry.get()
 
 
     gui_MulT.place(x=320,y=4)
