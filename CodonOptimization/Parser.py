@@ -1,6 +1,7 @@
 from Bio import SeqIO
 import pandas
 from Bio.Alphabet import generic_protein
+import numpy as np
 
 
 def parse_multiple_fasta_file(input_file_name):
@@ -56,9 +57,48 @@ def parse_codon_usage_table(file_name):
 
     return codon_usage_dict, codon_to_protein_dict, AA_list
 
+def delete_parnthases(line):
+    line = line.replace("(", "")
+    line = line.replace(")", "")
+    line = line.replace("\n", "")
+    return line
+
+
+
+def parse_kazusa_codon_usage_table(file_name):
+    codon_to_protein_dict = {}
+    codon_usage_dict = {}
+    AA_list = []
+    opened_file = open(file_name, mode = "r")
+    lines = list(opened_file)
+    lines =list(filter(('\n').__ne__,lines))
+    line_np_arr = np.array(lines).reshape((16, 1))
+    f = np.vectorize(delete_parnthases)
+    a = f(line_np_arr)
+    splitted = np.array([i[0].split() for i in a]).reshape(64,5)
+    relevent_data = np.delete(splitted,(3,4),1)
+    for codon_line in relevent_data:
+        aa = codon_line[1]
+        codon = codon_line[0]
+        usage = codon_line[2]
+        if aa not in AA_list:
+            AA_list.append(aa)
+        codon_usage_dict[codon] = float(usage)
+        codon_to_protein_dict[codon] = aa
+    return codon_usage_dict, codon_to_protein_dict, AA_list
+
+
+
+
+
+
+
 # file_name = "D:\LEA\BIOINFORMATICS\Year_3\Igem\data\sequence.fasta"
 # name, seq = parse_fasta_file(file_name)[0]
 # print(parse_into_trios(seq))
 
-# test codon usage table
-# print(parse_codon_usage_table("D:\LEA\BIOINFORMATICS\Year_3\Igem\data\e_coli_316407.csv"))
+# test KAZUSA codon usage table
+# print(parse_kazusa_codon_usage_table(r"C:\Users\LEA\PycharmProjects\IGEM_Team_HUJI\CodonOptimization\organism_files\Schizosaccharomyces_pombe_6109.csv"))
+
+#
+# print(parse_codon_usage_table("D:\LEA\Desktop\data\c_elegans_6239.csv"))

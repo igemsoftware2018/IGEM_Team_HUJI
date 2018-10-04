@@ -307,6 +307,7 @@ def create_second_hebrew_U_window():
         :return:
         """
         # open the file with the sequences
+        v.delete(0,END)
         v.insert(0, filedialog.askopenfilename())
 
     # Buttons and labels for more and optimizze buttons
