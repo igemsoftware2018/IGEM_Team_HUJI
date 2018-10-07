@@ -1,8 +1,6 @@
 from Bio import SeqIO
-import pandas
 from Bio.Alphabet import generic_protein
 import numpy as np
-
 
 def parse_multiple_fasta_file(input_file_name):
     """
@@ -39,6 +37,7 @@ def parse_string_protein():
 
 def parse_codon_usage_table(file_name):
     # file_name = file_name.decode()
+    import pandas
     pdf =pandas.read_csv(file_name, header =0  )
     codon_to_protein_dict = {}
     codon_usage_dict = {}

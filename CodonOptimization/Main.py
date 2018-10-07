@@ -1,10 +1,11 @@
 import os
-
+import numpy as np
 from Bio.Alphabet import IUPAC
 from Bio.Seq import Seq
+from Bio.Seq import Seq
 from Bio.SeqUtils import ProtParam
-from Bio.Alphabet import generic_dna
-from Bio.Restriction import RestrictionBatch
+from Bio.Alphabet import generic_dna, generic_rna
+from Bio.Restriction import RestrictionBatch, FormattedSeq
 # from CodonOptimization import Parser
 # from CodonOptimization import AminoAcid
 # from CodonOptimization import Calculator
@@ -51,12 +52,13 @@ def main(protein_fasta_filename, list_codon_usage_filenames,output_destination, 
 
     ouput_protein_list = Calculator.compute_and_Switch(Amino_Acids_obj_list, sequence,aa_count_dict)
     final_sequence = "".join(ouput_protein_list)
+    final_sequence = final_sequence.replace("U","T")
     #analyse final sequance
     if len(final_sequence) != len(sequence) * 3:
         print("final sequance length does not match input sequence length")
         exit(1)
     output_file_name = os.path.join (output_destination ,"Ouput.fasta" )
-    record = SeqRecord.SeqRecord(Seq(final_sequence, generic_dna) ,  name = name )
+    record = SeqRecord.SeqRecord(Seq(final_sequence, ) ,  name = name )
     if record.translate().seq != sequence:
         print("error- resulting DNA does not translate back to protein")
         exit(1)
@@ -65,11 +67,15 @@ def main(protein_fasta_filename, list_codon_usage_filenames,output_destination, 
     if restriction_enzymes != "":
        restriction_enzymes_list = restriction_enzymes.replace(",", " ").replace('\n', ' ').replace("\t"," ").split()
        batch = RestrictionBatch(restriction_enzymes_list)
-       num_cutting = check_restriction(Seq(final_sequence), batch)
+       num_cutting = len(check_restriction(Seq(final_sequence,generic_dna), batch))
+       best_num_cutting = np.inf
+       best_sequ = final_sequence
        iterations = 100
+       no_enzymes_cut = num_cutting == 0
        while iterations> 0 and num_cutting > 0 :
            ouput_protein_list = Calculator.compute_and_Switch(Amino_Acids_obj_list, sequence, aa_count_dict)
            final_sequence = "".join(ouput_protein_list)
+           final_sequence = final_sequence.replace("U", "T")
            # analyse final sequance
            if len(final_sequence) != len(sequence) * 3:
                print("final sequance length does not match input sequence length")
@@ -80,8 +86,26 @@ def main(protein_fasta_filename, list_codon_usage_filenames,output_destination, 
                print("error- resulting DNA does not translate back to protein")
                exit(1)
 
-           num_cutting = check_restriction(Seq(final_sequence), batch)
+           num_cutting = len(check_restriction(Seq(final_sequence, generic_dna), batch))
+           if num_cutting == 0:
+               check_restriction(Seq(final_sequence, generic_dna), batch, to_print= True)
+               print("printing to output file....")
+               with open(output_file_name, "w") as output_handle:
+                   SeqIO.write(record, output_handle, "fasta")
+               print("ouput sucsessful")
+               return True
+           best_num_cutting = min(best_num_cutting, num_cutting)
+           if best_num_cutting == num_cutting:
+               best_sequ = final_sequence
+
            iterations -= 1
+       if best_num_cutting > 0 :
+           cutting = check_restriction(Seq(best_sequ, generic_dna), batch, to_print=True)
+           record = SeqRecord.SeqRecord(Seq(best_sequ, generic_dna), name=name)
+           with open(output_file_name, "w") as output_handle:
+               SeqIO.write(record, output_handle, "fasta")
+           return "The enzymes the cut the sequence are:" + str(cutting)+ "\n Output printed to specified location."
+
 
 
     print("printing to output file....")
@@ -101,14 +125,14 @@ def verify_input():
     pass
 
 
-def check_restriction(seq, batch_list, to_print = True):
+def check_restriction(seq, batch_list, to_print = False):
      Ana = Restriction.Analysis(batch_list, seq, linear=False)
      Ana.full()
-     num_cutting = len(Ana.with_sites())
+     cutting =Ana.with_sites()
      if to_print:
          Ana.print_as("map")
          Ana.print_that()
-     return num_cutting
+     return cutting
 
 
 if __name__ == '__main__':
@@ -118,5 +142,6 @@ if __name__ == '__main__':
     fasta_file_name = sys.argv[1]
     output_folder = sys.argv[2]
     list_codon_usage_filenames = sys.argv[3:]
-    main(fasta_file_name, list_codon_usage_filenames, output_folder)
+    restriction_enzymes = input("Please enter restriction enzymes, sepereted by comma:")
+    main(fasta_file_name, list_codon_usage_filenames, output_folder, restriction_enzymes= restriction_enzymes)
 
