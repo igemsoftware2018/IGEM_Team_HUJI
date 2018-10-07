@@ -6,7 +6,6 @@ import os
 import sys #.path import append as append_system_path
 import webbrowser
 
-
 #global variables
 DEFULT_ENTRY_CSV_MSG = "Enter .csv file"
 Fasta_File_name = ""
@@ -18,8 +17,7 @@ is_3_shown = False
 protein_fasta_filename = ""
 fasta_file_name = ""
 codon_usage_tables_filnames_list = []
-# FILE_LOCATION ='CodonOptimization\'
-# FILE_LOCATION =''
+
 def run_Taico():
     """
     runs the TaiCo optimization program
@@ -94,13 +92,13 @@ def create_main_window():
     Screen1_next = tk.Button(root,text="Next",font=("Calibri", 15) , command = run_option )
 
     #DTU logo
-    photo_DTU = PhotoImage(file="CodonOptimization\DTU.gif")
+    photo_DTU = PhotoImage(file="CodonOptimization/DTU.gif")
     Buttonimage=Button(root, image=photo_DTU,bg="white",relief=RAISED,command = open_DTU_website)
     Buttonimage.place(x=620,y=350)
 
 
     #HebrewU logo
-    photo_HebrewU = PhotoImage(file= "CodonOptimization\HebrewU.gif")
+    photo_HebrewU = PhotoImage(file="CodonOptimization/HebrewU.gif")
     Buttonimage=Button(root, image=photo_HebrewU,bg="white",relief=RAISED, command = open_hebrew_u_website)
     Buttonimage.place(x=0,y=370)
 
@@ -263,7 +261,6 @@ def create_Hebrew_U_window():
     restriction_label.place(x=100, y=277)
 
     ouput_file_location = output_entry.get()
-    restriction_file_name= restriction_entry.get()
 
     gui_MulT.place(x=320,y=4)
     gui_descriptio_MulT.place(x=210,y=40)
@@ -408,7 +405,7 @@ def create_second_hebrew_U_window():
 
         return Main.main(protein_fasta_filename=protein_fasta_filename,
                          list_codon_usage_filenames=codon_usage_tables_filnames_list,
-                         output_destination=ouput_file_location,restriction_enzymes =  restriction_file_name)
+                         output_destination=ouput_file_location)
 
     def handle_click():
         """
@@ -421,8 +418,8 @@ def create_second_hebrew_U_window():
             messagebox.showinfo('MulT 2018', "Optimization successful. Output printed to specified location")
             root3.destroy()
             create_main_window()
-        elif type(success) is str:
-            messagebox.showinfo('MulT 2018', success)
+        elif success == 2:
+            messagebox.showinfo('MulT 2018', "Optimization failed.")
 
     Screen3_Optimize = Button(root3, text="Optimize", font=("Calibri", 15), command=handle_click)
     Screen3_Optimize.place(x=500, y=350)

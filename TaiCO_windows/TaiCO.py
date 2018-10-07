@@ -527,7 +527,7 @@ def run_taico():
     root.resizable(width=False, height=False)
     root.title("TaiCO 2016 DTU")
     #shortcut image
-    img = tkinter.Image("photo", file="TaiCO_windows\logo.gif")
+    img = tkinter.Image("photo", file="TaiCO_windows/logo.gif")
     root.tk.call('wm','iconphoto',root._w,img)
 
     #folder name to result file
@@ -589,12 +589,12 @@ def run_taico():
     canvas.itemconfig(myrectangle5, fill='white')
 
     #dna image
-    dna_image = PhotoImage(file="TaiCO_windows\dna.gif")
+    dna_image = PhotoImage(file="TaiCO_windows/dna.gif")
     dna_label1 = tkinter.Label(root,image=dna_image)
     dna_label1.place(x=160,y=327)
 
     #DTU Biobuilders image button
-    photo = PhotoImage(file="TaiCO_windows\logo.gif")
+    photo = PhotoImage(file="TaiCO_windows/logo.gif")
 
     Buttonimage=Button(root, image=photo,bg="white",command=magicbutton,relief=RAISED)
     Buttonimage.place(x=0,y=0)
