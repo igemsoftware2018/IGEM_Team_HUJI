@@ -18,7 +18,7 @@ from Bio import Restriction, SeqIO, SeqRecord
 import ntpath
 
 
-def main(protein_fasta_filename, list_codon_usage_filenames, output_destination, restriction_enzymes=""):
+def main(protein_fasta_filename, list_codon_usage_filenames, output_destination = "/home/ubuntu/IGEM_Team_HUJI", restriction_enzymes=""):
     # parse protein
     record = Parser.parse_fasta_file(protein_fasta_filename)
     name, id, sequence = record.name, record.id, record.seq
@@ -93,7 +93,7 @@ def main(protein_fasta_filename, list_codon_usage_filenames, output_destination,
                 with open(output_file_name, "w") as output_handle:
                     SeqIO.write(record, output_handle, "fasta")
                 print("ouput sucsessful")
-                return True
+                return "Output Sucsessful"
             best_num_cutting = min(best_num_cutting, num_cutting)
             if best_num_cutting == num_cutting:
                 best_sequ = final_sequence
@@ -111,7 +111,7 @@ def main(protein_fasta_filename, list_codon_usage_filenames, output_destination,
     with open(output_file_name, "w") as output_handle:
         SeqIO.write(record, output_handle, "fasta")
     print("ouput sucsessful")
-    return True
+    return "Output Sucsessful <a href= %s download>"% output_file_name
 
 
 def check_restriction(seq, batch_list, to_print=False):
@@ -148,5 +148,3 @@ if __name__ == '__main__':
 
 def main2(protein_fasta_filename, list_codon_usage_filenames, output_destination = "", restriction_enzymes=""):
     return str(protein_fasta_filename) + str(list_codon_usage_filenames)
-
-
