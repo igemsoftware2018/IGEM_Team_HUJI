@@ -23,7 +23,7 @@ def parse_fasta_file(input_file_name):
     :param input_file_name: file name
     :return:
     """
-    return SeqIO.read(input_file_name, "fasta", generic_protein)
+    return SeqIO.parse(input_file_name, "fasta", generic_protein)
 
 def parse_into_trios(sequence):
     """
@@ -74,7 +74,7 @@ def delete_parnthases(line):
 
 
 
-def parse_kazusa_codon_usage_table(file_name):
+def parse_kazusa_codon_usage_table(opened_file):
     """
     parses a standart kazusa table.
     :param file_name: the cazusa .csv file
@@ -84,7 +84,7 @@ def parse_kazusa_codon_usage_table(file_name):
     codon_to_protein_dict = {}
     codon_usage_dict = {}
     AA_list = []
-    opened_file = open(file_name, mode = "r")
+    # opened_file = open(file_name, mode = "r")
     lines = list(opened_file)
     lines =list(filter(('\n').__ne__,lines))
     line_np_arr = np.array(lines).reshape((16, 1))

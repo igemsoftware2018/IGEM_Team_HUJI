@@ -18,19 +18,19 @@ from Bio import Restriction, SeqIO, SeqRecord
 import ntpath
 
 
-def main(protein_fasta_filename, list_codon_usage_filenames, output_destination = "/home/ubuntu/IGEM_Team_HUJI", restriction_enzymes=""):
+def main(protein_fasta_open_file, list_codon_usage_open_files, output_destination, restriction_enzymes=""):
     # parse protein
-    record = Parser.parse_fasta_file(protein_fasta_filename)
+    record = list(Parser.parse_fasta_file(protein_fasta_open_file))[0]
     name, id, sequence = record.name, record.id, record.seq
     creatures = {}
     # parse table
-    if len(list_codon_usage_filenames) == 0:
+    if len(list_codon_usage_open_files) == 0:
         print("Error: Empty codon table filnames")
         exit(1)
-    # parses organism files
-    for i, file_name in enumerate(list_codon_usage_filenames):
-        creature_name = ntpath.basename(file_name).split('.')[0]
-        codon_usage_dict, codon_to_protein_dict, AA_list = Parser.parse_kazusa_codon_usage_table(str(file_name))
+    # parses organism files , assuming they are already open
+    for i, open_file in enumerate(list_codon_usage_open_files):
+        creature_name = ntpath.basename(open_file.name).split('.')[0]
+        codon_usage_dict, codon_to_protein_dict, AA_list = Parser.parse_kazusa_codon_usage_table(open_file)
         creatures[creature_name] = codon_usage_dict, codon_to_protein_dict, AA_list
     # creates AA
     Amino_Acids_obj_list = []
@@ -55,7 +55,7 @@ def main(protein_fasta_filename, list_codon_usage_filenames, output_destination 
     if len(final_sequence) != len(sequence) * 3:
         print("final sequance length does not match input sequence length")
         exit(1)
-    output_file_name = os.path.join(output_destination, "Ouput.fasta")
+    # output_file_name = os.path.join(output_destination, "Ouput.fasta")
     record = SeqRecord.SeqRecord(Seq(final_sequence, ), name=name)
     if record.translate().seq != sequence:
         print("error- resulting DNA does not translate back to protein")
@@ -80,7 +80,7 @@ def main(protein_fasta_filename, list_codon_usage_filenames, output_destination 
             if len(final_sequence) != len(sequence) * 3:
                 print("final sequance length does not match input sequence length")
                 exit(1)
-            output_file_name = os.path.join(output_destination, "Ouput.fasta")
+            # output_file_name = os.path.join(output_destination, "Ouput.fasta")
             record = SeqRecord.SeqRecord(Seq(final_sequence, generic_dna), name=name)
             if record.translate().seq != sequence:
                 print("error- resulting DNA does not translate back to protein")
@@ -90,8 +90,7 @@ def main(protein_fasta_filename, list_codon_usage_filenames, output_destination 
             if num_cutting == 0:
                 check_restriction(Seq(final_sequence, generic_dna), batch, to_print=True)
                 print("printing to output file....")
-                with open(output_file_name, "w") as output_handle:
-                    SeqIO.write(record, output_handle, "fasta")
+                SeqIO.write(record, output_destination, "fasta")
                 print("ouput sucsessful")
                 return "Output Sucsessful"
             best_num_cutting = min(best_num_cutting, num_cutting)
@@ -103,15 +102,11 @@ def main(protein_fasta_filename, list_codon_usage_filenames, output_destination 
         if best_num_cutting > 0:
             cutting = check_restriction(Seq(best_sequ, generic_dna), batch, to_print=True)
             record = SeqRecord.SeqRecord(Seq(best_sequ, generic_dna), name=name)
-            with open(output_file_name, "w") as output_handle:
-                SeqIO.write(record, output_handle, "fasta")
+            SeqIO.write(record, output_destination, "fasta")
             return "The enzymes the cut the sequence are:" + str(cutting) + "\n Output printed to specified location."
 
-    print("printing to output file....")
-    with open(output_file_name, "w") as output_handle:
-        SeqIO.write(record, output_handle, "fasta")
-    print("ouput sucsessful")
-    return "Output Sucsessful <a href= %s download>"% output_file_name
+    SeqIO.write(record, output_destination, "fasta")
+    return "ouput sucsessful"
 
 
 def check_restriction(seq, batch_list, to_print=False):
@@ -135,7 +130,7 @@ if __name__ == '__main__':
     # the code that runs the program from command line or directly.
     if len(sys.argv) < 5:
         print(
-            "Usage: <fasta file name> <Output file destination> <organism 1 codon table filename> <organism 2 codon table filename> ....")
+            "Usage: opened fasta file , opened <Output file destination>, opened organism 1 codon table opened organism 2 codon table ....")
         exit(1)
     # get file names
     fasta_file_name = sys.argv[1]
@@ -146,5 +141,3 @@ if __name__ == '__main__':
     main(fasta_file_name, list_codon_usage_filenames, output_folder, restriction_enzymes=restriction_enzymes)
 
 
-def main2(protein_fasta_filename, list_codon_usage_filenames, output_destination = "", restriction_enzymes=""):
-    return str(protein_fasta_filename) + str(list_codon_usage_filenames)
