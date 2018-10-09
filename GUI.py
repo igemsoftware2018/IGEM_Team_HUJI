@@ -232,7 +232,7 @@ def create_Hebrew_U_window():
         global ouput_file_location
         if ouput_file_location != "":
             output_entry.delete(0, END)
-        ouput_file_location = filedialog.askdirectory()
+        ouput_file_location = filedialog.askopenfilename()
         #show in entry
         output_entry.insert(0, ouput_file_location)
 
@@ -261,6 +261,8 @@ def create_Hebrew_U_window():
     restriction_label.place(x=100, y=277)
 
     ouput_file_location = output_entry.get()
+    global restriction_file_name
+    restriction_file_name = restriction_entry.get()
 
     gui_MulT.place(x=320,y=4)
     gui_descriptio_MulT.place(x=210,y=40)
@@ -402,10 +404,14 @@ def create_second_hebrew_U_window():
             codon_usage_tables_filnames_list.append(name4)
         protein_fasta_filename = protein_fasta_filename
         global ouput_file_location
+        global restriction_file_name
 
-        return Main.main(protein_fasta_filename=protein_fasta_filename,
-                         list_codon_usage_filenames=codon_usage_tables_filnames_list,
-                         output_destination=ouput_file_location)
+        opened_files = [open(filename, "r") for filename in codon_usage_tables_filnames_list]
+        with open(protein_fasta_filename, mode = "r") as opened_fasta_file, open(ouput_file_location, 'w') as opened_output_file:
+
+            return Main.main(protein_fasta_open_file=opened_fasta_file,
+                             list_codon_usage_open_files=opened_files,
+                             output_destination=opened_output_file,restriction_enzymes = restriction_file_name )
 
     def handle_click():
         """
@@ -413,13 +419,12 @@ def create_second_hebrew_U_window():
         :return:
         """
 
-        success = run_optimization()
-        if success == 1:
-            messagebox.showinfo('MulT 2018', "Optimization successful. Output printed to specified location")
-            root3.destroy()
-            create_main_window()
-        elif success == 2:
-            messagebox.showinfo('MulT 2018', "Optimization failed.")
+        Message = run_optimization()
+
+        messagebox.showinfo('MulT 2018', Message)
+        root3.destroy()
+        create_main_window()
+
 
     Screen3_Optimize = Button(root3, text="Optimize", font=("Calibri", 15), command=handle_click)
     Screen3_Optimize.place(x=500, y=350)

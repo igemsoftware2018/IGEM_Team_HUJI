@@ -2,9 +2,18 @@ import numpy as np
 import AminoAcid
 from collections import Counter
 
+# different represenations of stop codons
 STOP_CODONS = ["*", "-", "STOP"]
 
 def compute_and_Switch(All_AAs,protein,aa_count_dict, thresh = 0.05):
+    """
+
+    :param All_AAs: list of all the amino acids
+    :param protein: the input protein to switch
+    :param aa_count_dict:  how many times does each aa appear in protein
+    :param thresh: threshold under which not to use codon
+    :return:
+    """
     #choose which function to use according to user input
     means_dict = {}
     for aa in All_AAs:
@@ -13,6 +22,13 @@ def compute_and_Switch(All_AAs,protein,aa_count_dict, thresh = 0.05):
     return divide_into_result(means_dict, protein, All_AAs, aa_count_dict)
 
 def compute_mean_dict_for_aa(aa,  means_dict, thresh):
+    """
+    computed the average codon usage of all the organisms, while making sure the avg stays above given threshold.
+    :param aa: amino acid
+    :param means_dict: a dictionary mapping each codon to it's average usage among all given orgainsms.
+    :param thresh: threshold under which not to use codon
+    :return: means_dict
+    """
     #maximise the  AVERAGE with min better then threshould
     num_cratures = len(aa.organisms_dict)
     to_delete = []
@@ -28,8 +44,10 @@ def compute_mean_dict_for_aa(aa,  means_dict, thresh):
             usages.append(usage)
         mean = np.mean(usages)
         means_dict[codon] = mean
+    # these codons should not be used
     for codon_name in to_delete:
         del means_dict[codon_name]
+    # notify user
     if len(means_dict) ==0:
         print("No codon has usage lower than threshold. Try lowering the threshold")
         exit(1)
