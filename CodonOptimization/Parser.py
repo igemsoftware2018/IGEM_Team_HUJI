@@ -26,6 +26,10 @@ def parse_fasta_file(input_file_name):
     """
     sys.stdout.write("\nthe line is : \n")
     sys.stdout.write(str(input_file_name.readline()))
+    l= len(str(input_file_name.readline()))
+    sys.stdout.write(l)
+    if l >0 :
+        sys.stdout.write(input_file_name.readline()[0])
     sys.stdout.write("\n")
 
 
