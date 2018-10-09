@@ -407,6 +407,7 @@ def create_second_hebrew_U_window():
         global restriction_file_name
 
         opened_files = [open(filename, "r") for filename in codon_usage_tables_filnames_list]
+        opened_files = [(open_file.name, open_file ) for open_file in opened_files]
         with open(protein_fasta_filename, mode = "r") as opened_fasta_file, open(ouput_file_location, 'w') as opened_output_file:
 
             return Main.main(protein_fasta_open_file=opened_fasta_file,

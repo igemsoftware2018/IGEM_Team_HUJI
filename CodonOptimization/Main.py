@@ -18,7 +18,7 @@ from Bio import Restriction, SeqIO, SeqRecord
 import ntpath
 
 
-def main(protein_fasta_open_file, list_codon_usage_open_files, output_destination, restriction_enzymes=""):
+def main(protein_fasta_open_file, list_codon_usage_open_files, output_destination, restriction_enzymes="", run_from_server = False):
     # parse protein
     record = Parser.parse_fasta_file(protein_fasta_open_file)
     name, id, sequence = record.name, record.id, record.seq
@@ -81,16 +81,16 @@ def main(protein_fasta_open_file, list_codon_usage_open_files, output_destinatio
             # output_file_name = os.path.join(output_destination, "Ouput.fasta")
             record = SeqRecord.SeqRecord(Seq(final_sequence, generic_dna), name=name)
             if record.translate().seq != sequence:
-                print("error- resulting DNA does not translate back to protein")
-                exit(1)
+                raise Exception("error- resulting DNA does not translate back to protein")
             # if achieved non cutting sequence, save and return
             num_cutting = len(check_restriction(Seq(final_sequence, generic_dna), batch))
             if num_cutting == 0:
-                check_restriction(Seq(final_sequence, generic_dna), batch, to_print=True)
-                print("printing to output file....")
-                SeqIO.write(record, output_destination, "fasta")
-                print("ouput sucsessful")
-                return "Output Sucsessful"
+                if run_from_server:
+                    return record.format("fasta")
+                else:
+                    check_restriction(Seq(final_sequence, generic_dna), batch, to_print=True)
+                    SeqIO.write(record, output_destination, "fasta")
+                    return "Output Sucsessful"
             best_num_cutting = min(best_num_cutting, num_cutting)
             if best_num_cutting == num_cutting:
                 best_sequ = final_sequence
@@ -100,10 +100,14 @@ def main(protein_fasta_open_file, list_codon_usage_open_files, output_destinatio
         if best_num_cutting > 0:
             cutting = check_restriction(Seq(best_sequ, generic_dna), batch, to_print=True)
             record = SeqRecord.SeqRecord(Seq(best_sequ, generic_dna), name=name)
+            if run_from_server:
+                return record.format("fasta")
             SeqIO.write(record, output_destination, "fasta")
             return "The enzymes the cut the sequence are:" + str(cutting) + "\n Output printed to specified location."
 
     SeqIO.write(record, output_destination, "fasta")
+    if run_from_server:
+        return record.format("fasta")
     return "ouput sucsessful"
 
 
@@ -127,9 +131,8 @@ def check_restriction(seq, batch_list, to_print=False):
 if __name__ == '__main__':
     # the code that runs the program from command line or directly.
     if len(sys.argv) < 5:
-        print(
+        raise Exception(
             "Usage: opened fasta file , opened <Output file destination>, opened organism 1 codon table opened organism 2 codon table ....")
-        exit(1)
     # get file names
     fasta_file_name = sys.argv[1]
     output_folder = sys.argv[2]
