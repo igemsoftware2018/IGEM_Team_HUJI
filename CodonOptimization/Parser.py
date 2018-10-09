@@ -1,4 +1,5 @@
 from Bio import SeqIO
+from Bio.SeqIO import FastaIO
 from Bio.Alphabet import generic_protein
 import numpy as np
 
@@ -23,6 +24,7 @@ def parse_fasta_file(input_file_name):
     :param input_file_name: file name
     :return:
     """
+    input_file_name.seek()
     return SeqIO.read(input_file_name, "fasta", generic_protein)
 
 def parse_into_trios(sequence):
