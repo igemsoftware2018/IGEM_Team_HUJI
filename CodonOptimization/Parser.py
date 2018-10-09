@@ -24,19 +24,6 @@ def parse_fasta_file(input_file_name):
     :param input_file_name: file name
     :return:
     """
-
-    sys.stdout.write("\nthe line is : \n")
-    sys.stdout.write(str(input_file_name.readline()))
-    l= len(str(input_file_name.readline()))
-    sys.stdout.write("len is :"+str(l))
-    sys.stdout.write("\n")
-    if l >0 :
-        sys.stdout.write( "readline[0] is : "+ str(input_file_name.readline()[0]))
-    sys.stdout.write("\n")
-    input_file_name.seek(0)
-    sys.stdout.write("\nfile content is : \n")
-    sys.stdout.write(str(input_file_name.read()))
-    input_file_name.seek(0)
     return SeqIO.read(input_file_name, "fasta", generic_protein)
 
 def parse_into_trios(sequence):
@@ -101,6 +88,7 @@ def parse_kazusa_codon_usage_table(opened_file):
     # opened_file = open(file_name, mode = "r")
     lines = list(opened_file)
     lines =list(filter(('\n').__ne__,lines))
+    sys.stdout.write(str(lines))
     line_np_arr = np.array(lines).reshape((16, 1))
     f = np.vectorize(delete_parnthases)
     a = f(line_np_arr)
