@@ -27,9 +27,10 @@ def parse_fasta_file(input_file_name):
     sys.stdout.write("\nthe line is : \n")
     sys.stdout.write(str(input_file_name.readline()))
     l= len(str(input_file_name.readline()))
-    sys.stdout.write(str(l))
+    sys.stdout.write("len is :"+str(l))
+    sys.stdout.write("\n")
     if l >0 :
-        sys.stdout.write(str(input_file_name.readline()[0]))
+        sys.stdout.write( "readline[0] is : "+ str(input_file_name.readline()[0]))
     sys.stdout.write("\n")
     input_file_name.seek(0)
     return SeqIO.read(input_file_name, "fasta", generic_protein)
