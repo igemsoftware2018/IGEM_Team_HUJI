@@ -24,7 +24,11 @@ def parse_fasta_file(input_file_name):
     :param input_file_name: file name
     :return:
     """
-    sys.stdout.write("poop")
+    sys.stdout.write("\nthe line is : \n")
+    sys.stdout.write(input_file_name.readline())
+    sys.stdout.write("\n")
+
+
     input_file_name.seek(0)
     return SeqIO.read(input_file_name, "fasta", generic_protein)
 
