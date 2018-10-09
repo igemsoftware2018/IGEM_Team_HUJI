@@ -24,7 +24,7 @@ def parse_fasta_file(input_file_name):
     :param input_file_name: file name
     :return:
     """
-    input_file_name.seek()
+    input_file_name.seek(0)
     return SeqIO.read(input_file_name, "fasta", generic_protein)
 
 def parse_into_trios(sequence):
