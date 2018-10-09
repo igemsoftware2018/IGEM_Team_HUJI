@@ -25,7 +25,7 @@ def parse_fasta_file(input_file_name):
     :return:
     """
     sys.stdout.write("\nthe line is : \n")
-    sys.stdout.write(input_file_name.readline())
+    sys.stdout.write(str(input_file_name.readline()))
     sys.stdout.write("\n")
 
 
