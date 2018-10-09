@@ -27,10 +27,12 @@ def main(protein_fasta_open_file, list_codon_usage_open_files, output_destinatio
     if len(list_codon_usage_open_files) == 0:
         raise Exception("Error: Empty codon table filnames")
     # parses organism files , assuming they are already open
-    for i, open_file in enumerate(list_codon_usage_open_files):
-        creature_name = ntpath.basename(open_file.name).split('.')[0]
+
+    for fname, open_file in list_codon_usage_open_files:
+        creature_name = fname.split('.')[0]
         codon_usage_dict, codon_to_protein_dict, AA_list = Parser.parse_kazusa_codon_usage_table(open_file)
         creatures[creature_name] = codon_usage_dict, codon_to_protein_dict, AA_list
+
     # creates AA
     Amino_Acids_obj_list = []
     AA_LIST = creatures[creature_name][2]
