@@ -20,7 +20,7 @@ import ntpath
 
 def main(protein_fasta_open_file, list_codon_usage_open_files, output_destination, restriction_enzymes=""):
     # parse protein
-    record = list(Parser.parse_fasta_file(protein_fasta_open_file))[0]
+    record = Parser.parse_fasta_file(protein_fasta_open_file)
     name, id, sequence = record.name, record.id, record.seq
     creatures = {}
     # parse table
