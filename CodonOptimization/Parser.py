@@ -2,7 +2,7 @@ from Bio import SeqIO
 from Bio.SeqIO import FastaIO
 from Bio.Alphabet import generic_protein
 import numpy as np
-
+import sys
 
 #this is a program that parses the user input
 def parse_multiple_fasta_file(input_file_name):
@@ -24,6 +24,7 @@ def parse_fasta_file(input_file_name):
     :param input_file_name: file name
     :return:
     """
+    sys.stdout.write("poop")
     input_file_name.seek(0)
     return SeqIO.read(input_file_name, "fasta", generic_protein)
 
