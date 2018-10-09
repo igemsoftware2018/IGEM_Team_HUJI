@@ -25,13 +25,14 @@ def main(protein_fasta_open_file, list_codon_usage_open_files, output_destinatio
     creatures = {}
     # parse table
     if len(list_codon_usage_open_files) == 0:
-        print("Error: Empty codon table filnames")
-        exit(1)
+        raise Exception("Error: Empty codon table filnames")
     # parses organism files , assuming they are already open
-    for i, open_file in enumerate(list_codon_usage_open_files):
-        creature_name = ntpath.basename(open_file.name).split('.')[0]
+
+    for fname, open_file in list_codon_usage_open_files:
+        creature_name = fname.split('.')[0]
         codon_usage_dict, codon_to_protein_dict, AA_list = Parser.parse_kazusa_codon_usage_table(open_file)
         creatures[creature_name] = codon_usage_dict, codon_to_protein_dict, AA_list
+
     # creates AA
     Amino_Acids_obj_list = []
     AA_LIST = creatures[creature_name][2]
@@ -53,13 +54,11 @@ def main(protein_fasta_open_file, list_codon_usage_open_files, output_destinatio
     final_sequence = final_sequence.replace("U", "T")
     # analyse final sequance
     if len(final_sequence) != len(sequence) * 3:
-        print("final sequance length does not match input sequence length")
-        exit(1)
+        raise Exception("final sequance length does not match input sequence length")
     # output_file_name = os.path.join(output_destination, "Ouput.fasta")
     record = SeqRecord.SeqRecord(Seq(final_sequence, ), name=name)
     if record.translate().seq != sequence:
-        print("error- resulting DNA does not translate back to protein")
-        exit(1)
+        raise Exception("error- resulting DNA does not translate back to protein")
 
     # restriction enzymes- verifies they do not cut the sequence. if they do, pick the least cut sequence
     if restriction_enzymes != "":
@@ -78,8 +77,7 @@ def main(protein_fasta_open_file, list_codon_usage_open_files, output_destinatio
             final_sequence = final_sequence.replace("U", "T")
             # analyse final sequance
             if len(final_sequence) != len(sequence) * 3:
-                print("final sequance length does not match input sequence length")
-                exit(1)
+                raise Exception("final sequance length does not match input sequence length")
             # output_file_name = os.path.join(output_destination, "Ouput.fasta")
             record = SeqRecord.SeqRecord(Seq(final_sequence, generic_dna), name=name)
             if record.translate().seq != sequence:
