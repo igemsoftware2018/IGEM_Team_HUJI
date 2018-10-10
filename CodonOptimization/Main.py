@@ -17,6 +17,8 @@ from Bio import Restriction, SeqIO, SeqRecord
 # import python_codon_tables as pct
 import ntpath
 
+COMBO_RSTRICTION = "ACTAGA"
+COMP_COMBO_RSTRICTION = "TGATCT"
 
 def main(protein_fasta_open_file, list_codon_usage_open_files, output_destination, thresh = 0.05 , restriction_enzymes="", run_from_server = False):
     # parse protein
@@ -65,6 +67,10 @@ def main(protein_fasta_open_file, list_codon_usage_open_files, output_destinatio
         restriction_enzymes_list = restriction_enzymes.replace(",", " ").replace('\n', ' ').replace("\t", " ").split()
         batch = RestrictionBatch(restriction_enzymes_list)
         num_cutting = len(check_restriction(Seq(final_sequence, generic_dna), batch))
+
+        # CHECK FOR SpeI-XbaI
+        if COMBO_RSTRICTION in final_sequence or COMP_COMBO_RSTRICTION in final_sequence:
+            num_cutting += 1
         best_num_cutting = np.inf
         best_sequ = final_sequence
         iterations = 100
@@ -84,6 +90,9 @@ def main(protein_fasta_open_file, list_codon_usage_open_files, output_destinatio
                 raise Exception("error- resulting DNA does not translate back to protein")
             # if achieved non cutting sequence, save and return
             num_cutting = len(check_restriction(Seq(final_sequence, generic_dna), batch))
+            # CHECK FOR SpeI-XbaI
+            if COMBO_RSTRICTION in final_sequence or COMP_COMBO_RSTRICTION in final_sequence:
+                num_cutting += 1
             if num_cutting == 0:
                 if run_from_server:
                     return record.format("fasta")
