@@ -65,6 +65,7 @@ def main(protein_fasta_open_file, list_codon_usage_open_files, output_destinatio
     # restriction enzymes- verifies they do not cut the sequence. if they do, pick the least cut sequence
     if restriction_enzymes != "":
         restriction_enzymes_list = restriction_enzymes.replace(",", " ").replace('\n', ' ').replace("\t", " ").split()
+        sys.stdout.write(str(restriction_enzymes_list))
         batch = RestrictionBatch(restriction_enzymes_list)
         num_cutting = len(check_restriction(Seq(final_sequence, generic_dna), batch))
 
