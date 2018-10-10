@@ -49,8 +49,7 @@ def compute_mean_dict_for_aa(aa,  means_dict, thresh):
         del means_dict[codon_name]
     # notify user
     if len(means_dict) ==0:
-        print("No codon has usage lower than threshold. Try lowering the threshold")
-        exit(1)
+        raise Exception("No codon has usage lower than threshold. Try lowering the threshold")
     return means_dict
 
 def divide_into_result(codon_avrg_dict, protein, Amino_Acids_list, aa_count_dict):

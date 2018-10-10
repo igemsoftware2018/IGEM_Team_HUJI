@@ -18,7 +18,7 @@ from Bio import Restriction, SeqIO, SeqRecord
 import ntpath
 
 
-def main(protein_fasta_open_file, list_codon_usage_open_files, output_destination, restriction_enzymes="", run_from_server = False):
+def main(protein_fasta_open_file, list_codon_usage_open_files, output_destination, thresh = 0.05 , restriction_enzymes="", run_from_server = False):
     # parse protein
     record = Parser.parse_fasta_file(protein_fasta_open_file)
     name, id, sequence = record.name, record.id, record.seq
@@ -49,7 +49,7 @@ def main(protein_fasta_open_file, list_codon_usage_open_files, output_destinatio
     aa_count_dict = prot_analisys.count_amino_acids()
 
     # replaces aa with codons from codon pool
-    ouput_protein_list = Calculator.compute_and_Switch(Amino_Acids_obj_list, sequence, aa_count_dict)
+    ouput_protein_list = Calculator.compute_and_Switch(Amino_Acids_obj_list, sequence, aa_count_dict, thresh)
     final_sequence = "".join(ouput_protein_list)
     final_sequence = final_sequence.replace("U", "T")
     # analyse final sequance
@@ -72,7 +72,7 @@ def main(protein_fasta_open_file, list_codon_usage_open_files, output_destinatio
         # if the original sequence had a restriction site, repeat the sequence building 100 times , or until
         # a non- cut sequence is found
         while iterations > 0 and num_cutting > 0:
-            ouput_protein_list = Calculator.compute_and_Switch(Amino_Acids_obj_list, sequence, aa_count_dict)
+            ouput_protein_list = Calculator.compute_and_Switch(Amino_Acids_obj_list, sequence, aa_count_dict, thresh)
             final_sequence = "".join(ouput_protein_list)
             final_sequence = final_sequence.replace("U", "T")
             # analyse final sequance
