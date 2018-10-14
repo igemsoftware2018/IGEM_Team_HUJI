@@ -23,7 +23,7 @@ COMP_COMBO_RSTRICTION = "TGATCT"
 def main(protein_fasta_open_file, list_codon_usage_open_files, output_destination, thresh = 0.05 , restriction_enzymes="", run_from_server = False, protein_file_is_string = False):
     # parse protein
     if protein_file_is_string:
-        sequence = protein_fasta_open_file
+        sequence = Seq(protein_fasta_open_file)
     else:
         record = Parser.parse_fasta_file(protein_fasta_open_file)
         name, id, sequence = record.name, record.id, record.seq
