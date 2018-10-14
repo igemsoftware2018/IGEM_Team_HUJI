@@ -100,14 +100,17 @@ def divide_into_result(codon_avrg_dict, protein, Amino_Acids_list, aa_count_dict
             reminder = cnt[name] - len(checking_pool)
             if ( reminder > 0):
                 for j in range(reminder):
-                    need_to_append_choise = np.random.choice(checking_pool)
-                    checking_pool.append(need_to_append_choise)
+                    if len(checking_pool)> 0:
+                        need_to_append_choise = np.random.choice(checking_pool)
+                        checking_pool.append(need_to_append_choise)
     #insert codons in the aa slots
     for i, letter in enumerate(list_protein):
         for aa in Amino_Acids_list:
             if aa.one_letter_name != letter or aa.one_letter_name in STOP_CODONS:
                 continue
             pool = aa_to_pool_dict[aa]
+            if len(pool) <= 0 :
+                continue
             choise = np.random.choice(pool)
             pool.remove(choise)
             output_protein_list.append(choise)
