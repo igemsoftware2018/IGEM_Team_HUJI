@@ -92,7 +92,6 @@ def divide_into_result(codon_avrg_dict, protein, Amino_Acids_list, aa_count_dict
 
                 codon_pool += codon_percentage_dict[x].astype(np.int) * [x]
         aa_to_pool_dict[aa] = codon_pool
-    raise Exception(str(codon_percentage_dict))
     #check that there is a coorespondance between the pool size and amino acids used
     for aa in Amino_Acids_list:
         if aa.one_letter_name not in STOP_CODONS:
@@ -104,6 +103,8 @@ def divide_into_result(codon_avrg_dict, protein, Amino_Acids_list, aa_count_dict
                     if len(checking_pool)> 0:
                         need_to_append_choise = np.random.choice(checking_pool)
                         checking_pool.append(need_to_append_choise)
+    raise Exception(str(aa_to_pool_dicta))
+
     #insert codons in the aa slots
     for i, letter in enumerate(list_protein):
         for aa in Amino_Acids_list:
