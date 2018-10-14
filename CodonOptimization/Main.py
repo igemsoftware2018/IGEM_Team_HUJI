@@ -61,7 +61,7 @@ def main(protein_fasta_open_file, list_codon_usage_open_files, output_destinatio
     if len(final_sequence) != len(sequence) * 3:
         raise Exception("final sequance length does not match input sequence length")
     # output_file_name = os.path.join(output_destination, "Ouput.fasta")
-    record = SeqRecord.SeqRecord(Seq(final_sequence, ), name=name)
+    record = SeqRecord.SeqRecord(Seq(final_sequence ))
     if record.translate().seq != sequence:
         raise Exception("error- resulting DNA does not translate back to protein")
 
