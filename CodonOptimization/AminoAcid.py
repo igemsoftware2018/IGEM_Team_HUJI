@@ -70,6 +70,8 @@ class AminoAcid:
         self.not_to_use_codons = []
         pass
 
+    def __repr__(self):
+        return self.one_letter_name
     def add_organism_codons(self, codon_frequency_dict, organizm_name):
         """
         adds another organizm to the aa
