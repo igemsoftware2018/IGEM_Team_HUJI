@@ -84,7 +84,7 @@ def divide_into_result(codon_avrg_dict, protein, Amino_Acids_list, aa_count_dict
             if codon in aa.not_to_use_codons:
                 continue
             avr = codon_avrg_dict[codon]
-            codon_percentage_dict[codon] =np.round(avr/ part_of_usage*cnt[aa.one_letter_name])
+            codon_percentage_dict[codon] =np.ceil(avr/ part_of_usage*cnt[aa.one_letter_name])
     for aa in Amino_Acids_list:
         codon_pool = []
         for x in codon_percentage_dict.keys():
