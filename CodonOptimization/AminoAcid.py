@@ -1,4 +1,5 @@
 from Bio.Alphabet import IUPAC
+
 rna_codon_to_protein_dict = {
     "UUU":"F", "UUC":"F", "UUA":"L", "UUG":"L",
        "UCU":"S", "UCC":"S", "UCA":"S", "UCG":"S",
@@ -39,8 +40,15 @@ dna_codon_to_protein_dict = {
 # AA_to_codon_dict = dict((y,x) for x,y in dna_codon_to_protein_dict.items())
 
 class AminoAcid:
-
+    """
+    a class representing amino acids
+    """
     def __init__(self, one_letter_name, codon_to_aa_dict):
+        """
+        initiates the aa.
+        :param one_letter_name: one letterd aa name
+        :param codon_to_aa_dict: dictionary mapping from aa to codon
+        """
         # self.long_name = protein_name
         if len(one_letter_name) != 1:
             print("Error: multi-lettered protein name ")
@@ -63,11 +71,22 @@ class AminoAcid:
         pass
 
     def add_organism_codons(self, codon_frequency_dict, organizm_name):
+        """
+        adds another organizm to the aa
+        :param codon_frequency_dict: the frequency of usage dict for each codon
+        :param organizm_name: the name of the beast
+        :return:
+        """
         filtered_dict = {k: v for (k, v) in codon_frequency_dict.items() if  k in self.coding_codons}
         self.organisms_dict[organizm_name] = filtered_dict
 
 
     def find_relevant_codons_in_dict(self, array):
+        """
+
+        :param array:
+        :return:
+        """
 
         array =[(k,v) for k,v in array.items()]
         for key, val in array:

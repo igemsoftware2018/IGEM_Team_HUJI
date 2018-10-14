@@ -5,9 +5,11 @@ from collections import Counter
 # different represenations of stop codons
 STOP_CODONS = ["*", "-", "STOP"]
 
+"""
+this code is calculates the avrg codon usage and creates the codon pool.
+"""
 def compute_and_Switch(All_AAs,protein,aa_count_dict, thresh = 0.05):
     """
-
     :param All_AAs: list of all the amino acids
     :param protein: the input protein to switch
     :param aa_count_dict:  how many times does each aa appear in protein
@@ -55,9 +57,9 @@ def compute_mean_dict_for_aa(aa,  means_dict, thresh):
 def divide_into_result(codon_avrg_dict, protein, Amino_Acids_list, aa_count_dict):
     """
 
-    :param codon_avrg_dict: dict containing
-    :param protein:
-    :param Amino_Acids_list:
+    :param codon_avrg_dict: dict containing the codon to avrg usage across organisms
+    :param protein: the original protein
+    :param Amino_Acids_list: a list of al present amino acids
     :return:
     """
     # divide the length of the protein and distribute over lowest common delimeter
@@ -100,7 +102,7 @@ def divide_into_result(codon_avrg_dict, protein, Amino_Acids_list, aa_count_dict
                 for j in range(reminder):
                     need_to_append_choise = np.random.choice(checking_pool)
                     checking_pool.append(need_to_append_choise)
-
+    #insert codons in the aa slots
     for i, letter in enumerate(list_protein):
         for aa in Amino_Acids_list:
             if aa.one_letter_name != letter or aa.one_letter_name in STOP_CODONS:
@@ -112,11 +114,13 @@ def divide_into_result(codon_avrg_dict, protein, Amino_Acids_list, aa_count_dict
             break
     return output_protein_list
 
-def show_percentages():
-    # show the choise made in agraphical way for each organizm, while scoring them according to the best choise
-    pass
 
 def translate_dna_to_protein(inputfile):
+    """
+    translates dna to protein
+    :param inputfile: the filename to replace it's content
+    :return:
+    """
     f = open(inputfile, "r")
     seq = f.read()
 

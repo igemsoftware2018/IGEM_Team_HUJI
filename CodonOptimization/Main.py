@@ -20,10 +20,13 @@ import ntpath
 COMBO_RSTRICTION = "ACTAGA"
 COMP_COMBO_RSTRICTION = "TGATCT"
 
-def main(protein_fasta_open_file, list_codon_usage_open_files, output_destination, thresh = 0.05 , restriction_enzymes="", run_from_server = False):
+def main(protein_fasta_open_file, list_codon_usage_open_files, output_destination, thresh = 0.05 , restriction_enzymes="", run_from_server = False, protein_file_is_string = False):
     # parse protein
-    record = Parser.parse_fasta_file(protein_fasta_open_file)
-    name, id, sequence = record.name, record.id, record.seq
+    if protein_file_is_string:
+        sequence = protein_fasta_open_file
+    else:
+        record = Parser.parse_fasta_file(protein_fasta_open_file)
+        name, id, sequence = record.name, record.id, record.seq
     creatures = {}
     # parse table
     if len(list_codon_usage_open_files) == 0:
@@ -74,7 +77,7 @@ def main(protein_fasta_open_file, list_codon_usage_open_files, output_destinatio
             num_cutting += 1
         best_num_cutting = np.inf
         best_sequ = final_sequence
-        iterations = 100
+        iterations = 10000
         no_enzymes_cut = num_cutting == 0
         # if the original sequence had a restriction site, repeat the sequence building 100 times , or until
         # a non- cut sequence is found
