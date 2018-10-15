@@ -51,19 +51,17 @@ class AminoAcid:
         """
         # self.long_name = protein_name
         if len(one_letter_name) != 1:
-            print("Error: multi-lettered protein name ")
-            exit(1)
+            raise Exception("Error: multi-lettered protein name ")
         if not one_letter_name.isupper() and not one_letter_name== "*":
-            print("Error: non upper-case protein name ")
-            exit(1)
+            raise Exception("Error: non upper-case protein name ")
+
         self.one_letter_name = one_letter_name
         if not (one_letter_name == "STOP" or one_letter_name == "*"):
             try:
 
                 self.three_letter_name =  IUPAC.IUPACData.protein_letters_1to3[one_letter_name]
             except:
-                print("Error: no such proetin name : "+ one_letter_name )
-                exit(1)
+                raise Exception("Error: no such proetin name : "+ one_letter_name )
         self.coding_codons = []
         self.find_relevant_codons_in_dict(codon_to_aa_dict)
         self.organisms_dict = {}

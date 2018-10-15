@@ -89,7 +89,7 @@ def main(protein_fasta_open_file, list_codon_usage_open_files, output_destinatio
             if len(final_sequence) != len(sequence) * 3:
                 raise Exception("final sequance length does not match input sequence length")
             # output_file_name = os.path.join(output_destination, "Ouput.fasta")
-            record = SeqRecord.SeqRecord(Seq(final_sequence, generic_dna), name=name)
+            record = SeqRecord.SeqRecord(Seq(final_sequence, generic_dna))
             if record.translate().seq != sequence:
                 raise Exception("error- resulting DNA does not translate back to protein")
             # if achieved non cutting sequence, save and return
@@ -112,7 +112,7 @@ def main(protein_fasta_open_file, list_codon_usage_open_files, output_destinatio
         # return best sequence, as in one that is cut by the least amount of restriction enzymes
         if best_num_cutting > 0:
             cutting = check_restriction(Seq(best_sequ, generic_dna), batch, to_print=True)
-            record = SeqRecord.SeqRecord(Seq(best_sequ, generic_dna), name=name)
+            record = SeqRecord.SeqRecord(Seq(best_sequ, generic_dna))
             if run_from_server:
                 return record.format("fasta")
             SeqIO.write(record, output_destination, "fasta")

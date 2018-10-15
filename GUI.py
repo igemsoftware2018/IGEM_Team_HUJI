@@ -140,7 +140,7 @@ def create_Hebrew_U_window():
     #create labels
     fasta_label = Label(root2, text="Upload protein fasta file :", bg="#F0F0F0",font=("calibri",11))
     restriction_label = Label(root2, text="Upload restriction sites file (optional) :", bg="#F0F0F0",font=("calibri",11))
-    destination_label = Label(root2, text="Enter destination Folder:", bg="#F0F0F0",font=("calibri",11))
+    destination_label = Label(root2, text="Enter destination file:", bg="#F0F0F0",font=("calibri",11))
 
     def get_back_to_main1():
         """
