@@ -17,15 +17,7 @@ is_3_shown = False
 protein_fasta_filename = ""
 fasta_file_name = ""
 codon_usage_tables_filnames_list = []
-
-def run_Taico():
-    """
-    runs the TaiCo optimization program
-    :return:
-    """
-    from TaiCO_windows import TaiCO
-    TaiCO.run_taico()
-    return
+MOOLTI_2018 = "MOOLTi 2018"
 
 def open_hebrew_u_website():
     """
@@ -33,87 +25,6 @@ def open_hebrew_u_website():
     :return:
     """
     webbrowser.open("http://2018.igem.org/Team:HebrewU")
-def open_DTU_website():
-    """
-    prints the official iGEM website for DTU
-    :return:
-    """
-    webbrowser.open("http://2016.igem.org/Team:DTU-Denmark")
-
-def create_main_window():
-    """
-    creates and runs the main loop for the tool selection screen.
-    :return:
-    """
-    #create window
-    root = Tk()
-    root.configure(background='grey')
-    root.geometry("700x422")
-    root.resizable(width=False, height=False)
-    root.title("MulTaiCO 2018 HebrewU (and DTU)")
-
-    #status bar
-    status = Label(root,text="For help, please contact : HujiGEM@gmail.com",bd=2,relief=SUNKEN,anchor=W)
-    status.pack(side=BOTTOM,fill=X)
-
-    #rectangles wiht colours
-    canvas = Canvas(root, width = 700, height = 422)
-    canvas.pack()
-    myrectangle1 = canvas.create_rectangle(0, 0, 700, 65, fill='black')
-    canvas.itemconfig(myrectangle1, fill='#464444')
-
-    #gui name
-    gui_Mul = Label(root, text="Mul",font=("Calibri", 23),bg="#464444",fg="green")
-    gui_T = Label(root, text="T",font=("Calibri", 23, "bold"),bg="#464444",fg="white")
-    gui_aiCO = Label(root, text="aiCO",font=("Calibri", 23),bg="#464444",fg="red")
-    gui_Optimizeby = Label(root, text="Optimize by:",font=("Calibri", 15),fg="black")
-
-    #Radio Buttons
-    var = IntVar()
-    var.set(1)
-
-    Radio1 = Radiobutton(root, text="MulT (Multiple organism optimization by tRNA freq)",font=("Calibri", 15), variable=var,value=1, fg="#464444")
-    Radio2 = Radiobutton(root, text="TaiCO (Single optimization by tAI)",font=("Calibri", 15), variable=var, value=2, fg="#464444" )
-
-
-    def run_option():
-        """
-        the function choosing which program to activate
-        :return:
-        """
-        root.destroy()
-        if var.get() == 1:
-            create_Hebrew_U_window()
-        elif var.get() == 2:
-            run_Taico()
-
-
-    #next button
-    Screen1_next = tk.Button(root,text="Next",font=("Calibri", 15) , command = run_option )
-
-    #DTU logo
-    photo_DTU = PhotoImage(file="CodonOptimization/DTU.gif")
-    Buttonimage=Button(root, image=photo_DTU,bg="white",relief=RAISED,command = open_DTU_website)
-    Buttonimage.place(x=620,y=350)
-
-
-    #HebrewU logo
-    photo_HebrewU = PhotoImage(file="CodonOptimization/HebrewU.gif")
-    Buttonimage=Button(root, image=photo_HebrewU,bg="white",relief=RAISED, command = open_hebrew_u_website)
-    Buttonimage.place(x=0,y=370)
-
-    gui_description = Label(root, text="Multi-functional optimization tool",font=("Calibri", 12),bg="#464444",fg="white")
-    #placing
-    gui_description.place(x=238,y=40)
-    gui_Mul.place(x=283,y=4)
-    gui_T.place(x=335,y=4)
-    gui_aiCO.place(x=351,y=4)
-    gui_Optimizeby.place(x=100,y=100)
-    Radio1.place(x=150, y=150)
-    Radio2.place(x=150, y=200)
-    Screen1_next.place(x=500, y=275)
-    root.mainloop()
-
 
 #-------------------------------HebrewU 1 window------------------------------------------
 def create_Hebrew_U_window():
@@ -125,7 +36,7 @@ def create_Hebrew_U_window():
     root2.configure(background='#00B2B2')
     root2.geometry("700x422")
     root2.resizable(width=False, height=False)
-    root2.title("MulTaiCO 2018 HebrewU (and DTU)")
+    root2.title("MOOLTi 2018 HebrewU ")
 
 
     #rectangles wiht colours
@@ -135,20 +46,12 @@ def create_Hebrew_U_window():
     canvas.itemconfig(myrectangle1, fill='#00B2B2')
 
     #gui name
-    gui_MulT = Label(root2, text="MulT",font=("Calibri", 23),bg="#00B2B2",fg="white")
-    gui_descriptio_MulT = Label(root2, text="Multiple organism optimization by tRNA freq",font=("Calibri", 12),bg="#00B2B2",fg="white")
+    gui_MulT = Label(root2, text="MOOLTi",font=("Calibri", 23),bg="#00B2B2",fg="white")
+    gui_descriptio_MulT = Label(root2, text=" Multiple Organism Optimization Lab Tool for iGEM ",font=("Calibri", 12),bg="#00B2B2",fg="white")
     #create labels
     fasta_label = Label(root2, text="Upload protein fasta file :", bg="#F0F0F0",font=("calibri",11))
     restriction_label = Label(root2, text="Upload restriction sites file (optional) :", bg="#F0F0F0",font=("calibri",11))
     destination_label = Label(root2, text="Enter destination file:", bg="#F0F0F0",font=("calibri",11))
-
-    def get_back_to_main1():
-        """
-        destroys the current screen and returns to previous screen.
-        :return:
-        """
-        root2.destroy()
-        create_main_window()
 
     def second_menu():
         """
@@ -164,16 +67,16 @@ def create_Hebrew_U_window():
         protein_fasta_filename = fasta_entry.get()
         ouput_file_location = output_entry.get()
         if protein_fasta_filename == "" or protein_fasta_filename.split(".")[-1]!= "fasta":
-            messagebox.showinfo('MulT 2018',
+            messagebox.showinfo('MOOLTi 2018',
                                 'Please select a FASTA file')
             return
 
         if not os.path.exists(protein_fasta_filename) :
-            messagebox.showinfo('MulT 2018',
+            messagebox.showinfo(MOOLTI_2018,
                                      'Invalid or unexisting FASTA file, please select another')
             return
         if not os.path.exists(protein_fasta_filename) and protein_fasta_filename != "" :
-             messagebox.showinfo('MulT 2018',"Non- existing restriction file. ")
+             messagebox.showinfo(MOOLTI_2018,"Non- existing restriction file. ")
              return
         root2.destroy()
         create_second_hebrew_U_window()
@@ -181,8 +84,6 @@ def create_Hebrew_U_window():
 
     #next button
     Screen1_next2 = tk.Button(root2,text="Next",font=("Calibri", 15 ), command =second_menu )
-    #back_button
-    screen1_back = tk.Button(root2,text="Back",font=("Calibri", 15) , command = get_back_to_main1 )
     #creates entrys
     output_entry = Entry(root2)
     fasta_entry = Entry(root2)
@@ -249,7 +150,6 @@ def create_Hebrew_U_window():
     output_search_button.place(x=380, y=223)
     search_restriction_button.place(x = 380, y = 280)
     Screen1_next2.place(x=600,y=325)
-    screen1_back.place(x = 100, y = 325)
 
     #place entrys
     fasta_entry.place(x = 480, y = 167)
@@ -279,7 +179,7 @@ def create_second_hebrew_U_window():
     root3.configure(background='#00B2B2')
     root3.geometry("700x422")
     root3.resizable(width=False, height=False)
-    root3.title("MulTaiCO 2018 HebrewU (and DTU)")
+    root3.title("MOOLTi 2018 HebrewU")
 
     global codon_usage_tables_filnames_list
     def get_back_to_second_window():
@@ -298,8 +198,8 @@ def create_second_hebrew_U_window():
     canvas.itemconfig(myrectangle1, fill='#00B2B2')
 
     #gui name
-    gui_MulT4 = Label(root3, text="MulT", font=("Calibri", 23), bg="#00B2B2", fg="white")
-    gui_descriptio_MulT4 = Label(root3, text="Multiple organism optimization by tRNA freq",font=("Calibri", 12),bg="#00B2B2",fg="white")
+    gui_MulT4 = Label(root3, text="MOOLTi", font=("Calibri", 23), bg="#00B2B2", fg="white")
+    gui_descriptio_MulT4 = Label(root3, text=" Multiple Organism Optimization Lab Tool for iGEM", font=("Calibri", 12),bg="#00B2B2",fg="white")
 
     # select file with sequences
     def input_file(v):
@@ -422,10 +322,9 @@ def create_second_hebrew_U_window():
 
         Message = run_optimization()
 
-        messagebox.showinfo('MulT 2018', Message)
+        messagebox.showinfo(MOOLTI_2018, Message)
         root3.destroy()
-        create_main_window()
-
+        create_Hebrew_U_window()
 
     Screen3_Optimize = Button(root3, text="Optimize", font=("Calibri", 15), command=handle_click)
     Screen3_Optimize.place(x=500, y=350)
@@ -438,4 +337,4 @@ def create_second_hebrew_U_window():
 
 if __name__ == '__main__':
 
-    create_main_window()
+    create_Hebrew_U_window()
