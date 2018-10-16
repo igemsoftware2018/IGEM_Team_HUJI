@@ -5,6 +5,9 @@ To learn more , go to  http://2018.igem.org/Team:HebrewU/Software
 
 MOOLTi is now available online !  optimize your proteins at http://ec2-52-23-211-181.compute-1.amazonaws.com
 
+Example .fasta protein files and restriction enzymes files can be found at CodonOptimization\example_files
+Example .csv files for many model organisms can be found at CodonOptimization\organism_files
+
 Usage instructions:
 
 Run using Python GUI: 
