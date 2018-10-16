@@ -412,7 +412,7 @@ def create_second_hebrew_U_window():
 
             return Main.main(protein_fasta_open_file=opened_fasta_file,
                              list_codon_usage_open_files=opened_files,
-                             output_destination=opened_output_file,restriction_enzymes = restriction_file_name )
+                             output_destination=opened_output_file,restriction_enzymes = restriction_file_name , run_from_server = False)
 
     def handle_click():
         """

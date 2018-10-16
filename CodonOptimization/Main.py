@@ -20,7 +20,7 @@ import ntpath
 COMBO_RSTRICTION = "ACTAGA"
 COMP_COMBO_RSTRICTION = "TGATCT"
 
-def main(protein_fasta_open_file, list_codon_usage_open_files, output_destination, thresh = 0.05 , restriction_enzymes="", run_from_server = False, protein_file_is_string = False):
+def main(protein_fasta_open_file, list_codon_usage_open_files, output_destination, thresh = 0.05 , restriction_enzymes="", run_from_server = True, protein_file_is_string = False):
     # parse protein
     if protein_file_is_string:
         sequence = Seq(protein_fasta_open_file)
@@ -145,13 +145,16 @@ if __name__ == '__main__':
     # the code that runs the program from command line or directly.
     if len(sys.argv) < 5:
         raise Exception(
-            "Usage: opened fasta file , opened <Output file destination>, opened organism 1 codon table opened organism 2 codon table ....")
-    # get file names
-    fasta_file_name = sys.argv[1]
-    output_folder = sys.argv[2]
+            "Usage: protein sequence string, threshold (defult is 0.05),  organism 1 codon filename (csv file),  opened organism 2 codon table filename  (csv file)")
+    # get data
+    protein_sequence = sys.argv[1]
+    thresh = float(sys.argv[2])
+    output_folder = ""
     list_codon_usage_filenames = sys.argv[3:]
+    list_codon_usage_filenames = [(f, open(f)) for f in list_codon_usage_filenames ]
     restriction_enzymes = input("Please enter restriction enzymes, sepereted by comma:")
+
     # runs main program
-    main(fasta_file_name, list_codon_usage_filenames, output_folder, restriction_enzymes=restriction_enzymes)
+    print(main(protein_sequence, list_codon_usage_filenames, output_folder, restriction_enzymes=restriction_enzymes, run_from_server=True,protein_file_is_string=True))
 
 
